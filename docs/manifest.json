@@ -40,7 +40,23 @@
       },
       "lastCommit": "feat: add simple spoon design",
       "updated": "2026-06-20"
+    },
+    {
+      "name": "watch_stand",
+      "stl": "designs/watch_stand/watch_stand.stl",
+      "preview": "designs/watch_stand/preview.png",
+      "params": {
+        "display_angle": "62",
+        "backrest_height": "55",
+        "strap_slot_width": "24",
+        "strap_channel_width": "24",
+        "strap_channel_depth": "3",
+        "nub_height": "5",
+        "top_chamfer": "1"
+      },
+      "lastCommit": "Add Gridfinity 1x2 angled watch display stand",
+      "updated": "2026-06-20"
     }
   ],
-  "generated": "2026-06-20T16:14:17.028770+00:00"
+  "generated": "2026-06-20T17:17:30.901554+00:00"
 }
