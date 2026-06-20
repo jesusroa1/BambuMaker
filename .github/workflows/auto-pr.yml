@@ -1,0 +1,47 @@
+name: Auto-create PR
+
+on:
+  push:
+    branches:
+      - 'claude/**'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  open-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create PR if one doesn't exist
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH="${GITHUB_REF#refs/heads/}"
+
+          existing=$(gh pr list --head "$BRANCH" --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            echo "PR #$existing already exists for $BRANCH — skipping"
+            exit 0
+          fi
+
+          # Build a title from recent commits on this branch
+          COMMITS=$(git log origin/main..HEAD --pretty=format:"- %s" | head -10)
+          TITLE=$(git log origin/main..HEAD --pretty=format:"%s" | head -1)
+
+          gh pr create \
+            --title "$TITLE" \
+            --body "$(cat <<EOF
+Auto-generated PR from \`$BRANCH\`.
+
+## Changes
+$COMMITS
+EOF
+)" \
+            --base main \
+            --head "$BRANCH"

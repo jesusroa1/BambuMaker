@@ -1,0 +1,67 @@
+name: Build 3D Designs
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: DesignIterator
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install OpenSCAD + Xvfb
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y openscad xvfb
+
+      - name: Compile designs
+        run: |
+          mkdir -p docs/designs
+
+          for design_dir in designs/*/; do
+            name=$(basename "$design_dir")
+            scad="$design_dir$name.scad"
+
+            if [ ! -f "$scad" ]; then
+              echo "⚠️  No $name.scad found in $design_dir — skipping"
+              continue
+            fi
+
+            echo "▶ Building $name..."
+            mkdir -p "docs/designs/$name"
+
+            openscad -o "docs/designs/$name/$name.stl" "$scad" \
+              && echo "  ✓ STL" \
+              || echo "  ✗ STL export failed"
+
+            xvfb-run -a openscad \
+              --camera=0,0,0,50,0,25,250 \
+              --imgsize=600,600 \
+              --colorscheme=Tomorrow \
+              -o "docs/designs/$name/preview.png" \
+              "$scad" \
+              && echo "  ✓ preview.png" \
+              || echo "  ✗ Preview render failed"
+          done
+
+      - name: Generate manifest
+        run: python3 scripts/generate_manifest.py
+
+      - name: Commit generated files
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/
+          git diff --staged --quiet \
+            && echo "Nothing to commit" \
+            || (git commit -m "build: regenerate designs [skip ci]" && git push)
