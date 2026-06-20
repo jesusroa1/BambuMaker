@@ -57,11 +57,18 @@ jobs:
       - name: Generate manifest
         run: python3 scripts/generate_manifest.py
 
+      - name: Sync to root docs/ for GitHub Pages
+        working-directory: ${{ github.workspace }}
+        run: |
+          rsync -a --delete DesignIterator/docs/ docs/
+          touch docs/.nojekyll
+
       - name: Commit generated files
+        working-directory: ${{ github.workspace }}
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/
+          git add DesignIterator/docs/ docs/
           git diff --staged --quiet \
             && echo "Nothing to commit" \
-            || (git commit -m "build: regenerate designs [skip ci]" && git push)
+            || (git commit -m "build: regenerate docs [skip ci]" && git push)

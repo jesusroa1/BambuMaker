@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
+<title>BambuMaker</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --top-h: 52px;
+    --params-h: 44px;
+    --sheet-peek: 72px;
+    --sheet-full: 55vh;
+    --radius: 14px;
+    --bg: #111;
+    --surface: #1c1c1e;
+    --surface2: #2c2c2e;
+    --border: rgba(255,255,255,0.1);
+    --text: #f5f5f7;
+    --muted: rgba(255,255,255,0.45);
+    --accent: #0a84ff;
+  }
+
+  html, body {
+    height: 100%; height: 100dvh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* ── Top bar ─────────────────────────────────────── */
+  #topbar {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: var(--top-h);
+    background: rgba(17,17,17,0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--border);
+    display: flex; align-items: center;
+    padding: 0 14px;
+    gap: 10px;
+    z-index: 100;
+    padding-top: env(safe-area-inset-top, 0);
+  }
+  #design-name {
+    flex: 1;
+    font-size: 15px; font-weight: 600;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  #download-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 7px 16px;
+    font-size: 13px; font-weight: 600;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex; align-items: center; gap: 5px;
+  }
+  #download-btn:disabled { background: var(--surface2); color: var(--muted); }
+  #download-btn svg { width: 14px; height: 14px; }
+
+  /* ── 3D canvas ───────────────────────────────────── */
+  #viewer {
+    position: fixed;
+    top: var(--top-h); left: 0; right: 0;
+    bottom: calc(var(--params-h) + var(--sheet-peek));
+    overflow: hidden;
+  }
+  #viewer canvas { display: block; width: 100% !important; height: 100% !important; }
+
+  #empty-state {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 10px; color: var(--muted);
+    font-size: 14px;
+  }
+  #empty-state svg { width: 48px; height: 48px; opacity: 0.4; }
+
+  /* ── Params strip ────────────────────────────────── */
+  #params-strip {
+    position: fixed;
+    bottom: var(--sheet-peek);
+    left: 0; right: 0;
+    height: var(--params-h);
+    background: rgba(17,17,17,0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 0.5px solid var(--border);
+    display: flex; align-items: center;
+    padding: 0 14px;
+    gap: 6px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  #params-strip::-webkit-scrollbar { display: none; }
+
+  .param-pill {
+    flex-shrink: 0;
+    background: var(--surface2);
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .param-pill b { color: var(--text); font-weight: 500; }
+
+  /* ── Bottom sheet ────────────────────────────────── */
+  #sheet {
+    position: fixed;
+    left: 0; right: 0;
+    bottom: 0;
+    height: var(--sheet-full);
+    background: var(--surface);
+    border-radius: var(--radius) var(--radius) 0 0;
+    border-top: 0.5px solid var(--border);
+    transform: translateY(calc(var(--sheet-full) - var(--sheet-peek)));
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 90;
+    display: flex; flex-direction: column;
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+  #sheet.open { transform: translateY(0); }
+
+  #sheet-handle-area {
+    padding: 10px 0 6px;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    cursor: pointer; flex-shrink: 0;
+  }
+  .handle-bar {
+    width: 36px; height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+  }
+  #sheet-label {
+    font-size: 12px; font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  #design-list {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px 12px 16px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+
+  .design-card {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: var(--surface2);
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: border-color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+  .design-card.active { border-color: var(--accent); }
+  .design-card:active { opacity: 0.75; }
+
+  .card-thumb {
+    width: 52px; height: 52px;
+    border-radius: 8px;
+    background: #333;
+    flex-shrink: 0;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .card-thumb svg { width: 24px; height: 24px; opacity: 0.3; }
+
+  .card-info { flex: 1; min-width: 0; }
+  .card-name { font-size: 15px; font-weight: 600; }
+  .card-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  .card-badge {
+    flex-shrink: 0;
+    background: rgba(10,132,255,0.15);
+    color: var(--accent);
+    font-size: 11px; font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 20px;
+  }
+  .card-badge.pending { background: rgba(255,255,255,0.06); color: var(--muted); }
+
+  /* ── Loading overlay ─────────────────────────────── */
+  #loading {
+    position: fixed; inset: 0;
+    background: var(--bg);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 12px; z-index: 200;
+    font-size: 14px; color: var(--muted);
+    transition: opacity 0.4s;
+  }
+  #loading.hidden { opacity: 0; pointer-events: none; }
+  .spinner {
+    width: 28px; height: 28px;
+    border: 2.5px solid var(--surface2);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div id="topbar">
+  <span id="design-name">BambuMaker</span>
+  <button id="download-btn" disabled>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    STL
+  </button>
+</div>
+
+<!-- 3D viewer -->
+<div id="viewer">
+  <div id="empty-state">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    <span>Select a design below</span>
+  </div>
+</div>
+
+<!-- Params strip -->
+<div id="params-strip"></div>
+
+<!-- Bottom sheet -->
+<div id="sheet">
+  <div id="sheet-handle-area">
+    <div class="handle-bar"></div>
+    <span id="sheet-label">Designs</span>
+  </div>
+  <div id="design-list"></div>
+</div>
+
+<!-- Loading -->
+<div id="loading"><div class="spinner"></div><span>Loading…</span></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+// ── State ────────────────────────────────────────────────
+let manifest = { designs: [] };
+let current = null;
+let sheetOpen = false;
+
+// ── DOM refs ─────────────────────────────────────────────
+const $name     = document.getElementById('design-name');
+const $dl       = document.getElementById('download-btn');
+const $params   = document.getElementById('params-strip');
+const $list     = document.getElementById('design-list');
+const $sheet    = document.getElementById('sheet');
+const $loading  = document.getElementById('loading');
+const $empty    = document.getElementById('empty-state');
+const $handle   = document.getElementById('sheet-handle-area');
+
+// ── Three.js setup ───────────────────────────────────────
+const viewerEl = document.getElementById('viewer');
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setClearColor(0x111111, 1);
+viewerEl.appendChild(renderer.domElement);
+
+const scene  = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 2000);
+camera.position.set(0, -180, 120);
+camera.lookAt(0, 0, 0);
+
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.1;
+controls.enablePan = false;
+controls.minDistance = 50;
+controls.maxDistance = 500;
+
+scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+const dir1 = new THREE.DirectionalLight(0xffffff, 0.9);
+dir1.position.set(1, 1, 2);
+scene.add(dir1);
+const dir2 = new THREE.DirectionalLight(0x88aaff, 0.3);
+dir2.position.set(-1, -1, -1);
+scene.add(dir2);
+
+let meshObj = null;
+
+function resizeRenderer() {
+  const w = viewerEl.clientWidth;
+  const h = viewerEl.clientHeight;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+}
+
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+}
+
+new ResizeObserver(resizeRenderer).observe(viewerEl);
+resizeRenderer();
+animate();
+
+// ── Load STL ─────────────────────────────────────────────
+function loadSTL(url) {
+  $empty.style.display = 'none';
+  if (meshObj) { scene.remove(meshObj); meshObj.geometry.dispose(); }
+
+  const loader = new THREE.STLLoader();
+  loader.load(url, (geometry) => {
+    geometry.computeBoundingBox();
+    const box = geometry.boundingBox;
+    const center = new THREE.Vector3();
+    box.getCenter(center);
+    geometry.translate(-center.x, -center.y, -center.z);
+
+    const size = new THREE.Vector3();
+    box.getSize(size);
+    const maxDim = Math.max(size.x, size.y, size.z);
+    const scale = 120 / maxDim;
+
+    const mat = new THREE.MeshPhongMaterial({
+      color: 0x0a84ff,
+      specular: 0x333333,
+      shininess: 30,
+    });
+    meshObj = new THREE.Mesh(geometry, mat);
+    meshObj.scale.setScalar(scale);
+    meshObj.rotation.x = -Math.PI / 2;
+    scene.add(meshObj);
+
+    camera.position.set(0, -maxDim * scale * 1.8, maxDim * scale * 0.8);
+    camera.lookAt(0, 0, 0);
+    controls.reset();
+  }, undefined, () => {
+    $empty.querySelector('span').textContent = 'STL not compiled yet — push to trigger build';
+    $empty.style.display = '';
+  });
+}
+
+// ── Select design ─────────────────────────────────────────
+function selectDesign(d) {
+  current = d;
+  $name.textContent = d.name;
+
+  // Params strip
+  $params.innerHTML = '';
+  if (d.params && Object.keys(d.params).length) {
+    for (const [k, v] of Object.entries(d.params)) {
+      const pill = document.createElement('div');
+      pill.className = 'param-pill';
+      pill.innerHTML = `${k}: <b>${v}</b>`;
+      $params.appendChild(pill);
+    }
+    const commit = document.createElement('div');
+    commit.className = 'param-pill';
+    commit.innerHTML = `last: <b>${d.lastCommit}</b>`;
+    $params.appendChild(commit);
+  }
+
+  // Download button
+  if (d.stl) {
+    $dl.disabled = false;
+    $dl.onclick = () => {
+      const a = document.createElement('a');
+      a.href = d.stl;
+      a.download = `${d.name}.stl`;
+      a.click();
+    };
+  } else {
+    $dl.disabled = true;
+    $dl.onclick = null;
+  }
+
+  // Load STL
+  if (d.stl) {
+    loadSTL(d.stl);
+  } else {
+    if (meshObj) { scene.remove(meshObj); meshObj.geometry.dispose(); meshObj = null; }
+    $empty.querySelector('span').textContent = 'Build pending — push a commit to compile';
+    $empty.style.display = '';
+  }
+
+  // Highlight active card
+  document.querySelectorAll('.design-card').forEach(el => {
+    el.classList.toggle('active', el.dataset.name === d.name);
+  });
+
+  closeSheet();
+}
+
+// ── Build design list ─────────────────────────────────────
+function buildList() {
+  $list.innerHTML = '';
+  if (!manifest.designs.length) {
+    $list.innerHTML = '<p style="color:var(--muted);font-size:13px;padding:8px 4px">No designs yet.</p>';
+    return;
+  }
+  for (const d of manifest.designs) {
+    const card = document.createElement('div');
+    card.className = 'design-card';
+    card.dataset.name = d.name;
+
+    const thumb = document.createElement('div');
+    thumb.className = 'card-thumb';
+    if (d.preview) {
+      const img = document.createElement('img');
+      img.src = d.preview;
+      img.alt = d.name;
+      thumb.appendChild(img);
+    } else {
+      thumb.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>`;
+    }
+
+    const info = document.createElement('div');
+    info.className = 'card-info';
+    info.innerHTML = `<div class="card-name">${d.name}</div><div class="card-meta">${d.updated} · ${d.lastCommit}</div>`;
+
+    const badge = document.createElement('div');
+    if (d.stl) {
+      badge.className = 'card-badge';
+      badge.textContent = 'Ready';
+    } else {
+      badge.className = 'card-badge pending';
+      badge.textContent = 'Pending';
+    }
+
+    card.appendChild(thumb);
+    card.appendChild(info);
+    card.appendChild(badge);
+    card.onclick = () => selectDesign(d);
+    $list.appendChild(card);
+  }
+}
+
+// ── Sheet toggle ──────────────────────────────────────────
+function openSheet()  { sheetOpen = true;  $sheet.classList.add('open'); }
+function closeSheet() { sheetOpen = false; $sheet.classList.remove('open'); }
+function toggleSheet() { sheetOpen ? closeSheet() : openSheet(); }
+
+$handle.addEventListener('click', toggleSheet);
+
+// Swipe down to close
+let touchStartY = 0;
+$sheet.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive: true });
+$sheet.addEventListener('touchend', e => {
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  if (dy > 50) closeSheet();
+}, { passive: true });
+
+// ── Fetch manifest & init ─────────────────────────────────
+async function init() {
+  try {
+    const res = await fetch('manifest.json?t=' + Date.now());
+    if (res.ok) manifest = await res.json();
+  } catch (e) {
+    console.warn('manifest.json not found — using empty state');
+  }
+
+  buildList();
+
+  // Auto-select first ready design, else first design
+  const first = manifest.designs.find(d => d.stl) || manifest.designs[0];
+  if (first) selectDesign(first);
+
+  $loading.classList.add('hidden');
+
+  // Open sheet if nothing is ready yet so user can see the list
+  if (!first || !first.stl) setTimeout(openSheet, 600);
+}
+
+init();
+</script>
+</body>
+</html>
