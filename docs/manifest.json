@@ -1,4 +1,46 @@
 {
-  "designs": [],
-  "generated": "pending-first-build"
+  "designs": [
+    {
+      "name": "bowl",
+      "stl": "designs/bowl/bowl.stl",
+      "preview": "designs/bowl/preview.png",
+      "params": {
+        "diameter": "120",
+        "height": "50",
+        "wall_thickness": "3"
+      },
+      "lastCommit": "claude cowork info",
+      "updated": "2026-06-20"
+    },
+    {
+      "name": "mug",
+      "stl": "designs/mug/mug.stl",
+      "preview": "designs/mug/preview.png",
+      "params": {
+        "height": "100",
+        "outer_diameter": "80",
+        "wall_thickness": "3",
+        "base_thickness": "4",
+        "handle_extend": "35"
+      },
+      "lastCommit": "claude cowork info",
+      "updated": "2026-06-20"
+    },
+    {
+      "name": "spoon",
+      "stl": "designs/spoon/spoon.stl",
+      "preview": "designs/spoon/preview.png",
+      "params": {
+        "bowl_length": "55",
+        "bowl_width": "40",
+        "bowl_depth": "10",
+        "handle_length": "110",
+        "handle_width": "13",
+        "wall": "2"
+      },
+      "lastCommit": "feat: add simple spoon design",
+      "updated": "2026-06-20"
+    }
+  ],
+  "generated": "2026-06-20T16:14:17.028770+00:00"
 }
