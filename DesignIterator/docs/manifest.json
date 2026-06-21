@@ -46,17 +46,18 @@
       "stl": "designs/watch_stand/watch_stand.stl",
       "preview": "designs/watch_stand/preview.png",
       "params": {
-        "display_angle": "62",
-        "backrest_height": "55",
-        "strap_slot_width": "24",
-        "strap_channel_width": "24",
-        "strap_channel_depth": "3",
-        "nub_height": "5",
-        "top_chamfer": "1"
+        "base_thick": "14",
+        "neck_width": "22",
+        "neck_depth": "16",
+        "neck_height": "55",
+        "head_width": "36",
+        "head_depth": "22",
+        "head_body_height": "8",
+        "head_dome_height": "12"
       },
-      "lastCommit": "Add Gridfinity 1x2 angled watch display stand",
-      "updated": "2026-06-20"
+      "lastCommit": "Redesign watch stand as post/pillar style (drape-over head)",
+      "updated": "2026-06-21"
     }
   ],
-  "generated": "2026-06-20T17:17:30.901554+00:00"
+  "generated": "2026-06-21T23:18:11.055062+00:00"
 }
