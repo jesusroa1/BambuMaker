@@ -384,9 +384,11 @@ function selectDesign(d) {
     $dl.onclick = null;
   }
 
-  // Load STL
+  // Load STL — append build timestamp so browsers don't serve a stale cached STL
+  // after CI regenerates the file (manifest is always fetched fresh; STL was not).
   if (d.stl) {
-    loadSTL(d.stl);
+    const stlUrl = d.stl + '?v=' + encodeURIComponent(manifest.generated || Date.now());
+    loadSTL(stlUrl);
   } else {
     if (meshObj) { scene.remove(meshObj); meshObj.geometry.dispose(); meshObj = null; }
     $empty.querySelector('span').textContent = 'Build pending — push a commit to compile';
