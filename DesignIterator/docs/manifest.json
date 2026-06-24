@@ -42,6 +42,22 @@
       "updated": "2026-06-20"
     },
     {
+      "name": "tesla_lotion_holder",
+      "stl": "designs/tesla_lotion_holder/tesla_lotion_holder.stl",
+      "preview": "designs/tesla_lotion_holder/preview.png",
+      "params": {
+        "tray_w": "270",
+        "tray_d": "140",
+        "tray_h": "68",
+        "wall_t": "3",
+        "flange_d": "40",
+        "hook_h": "15",
+        "corner_r": "5"
+      },
+      "lastCommit": "add: Tesla Model 3 lotion holder (2017\u20132023)",
+      "updated": "2026-06-22"
+    },
+    {
       "name": "watch_stand",
       "stl": "designs/watch_stand/watch_stand.stl",
       "preview": "designs/watch_stand/preview.png",
@@ -59,5 +75,5 @@
       "updated": "2026-06-21"
     }
   ],
-  "generated": "2026-06-21T23:18:11.055062+00:00"
+  "generated": "2026-06-24T03:08:53.424958+00:00"
 }
