@@ -64,6 +64,59 @@
   #download-btn:disabled { background: var(--surface2); color: var(--muted); }
   #download-btn svg { width: 14px; height: 14px; }
 
+  #capture-btn {
+    background: var(--surface2);
+    color: var(--text);
+    border: none;
+    border-radius: 20px;
+    padding: 7px 12px;
+    font-size: 13px; font-weight: 600;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex; align-items: center; gap: 5px;
+  }
+  #capture-btn:disabled { color: var(--muted); opacity: 0.5; }
+  #capture-btn svg { width: 15px; height: 15px; }
+
+  /* ── Capture modal ───────────────────────────────── */
+  #capture-modal {
+    position: fixed; inset: 0; z-index: 300;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: none;
+    flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 20px;
+    padding-top: calc(20px + env(safe-area-inset-top, 0));
+    padding-bottom: calc(20px + env(safe-area-inset-bottom, 0));
+  }
+  #capture-modal.open { display: flex; }
+  #capture-preview {
+    max-width: 100%;
+    max-height: calc(100% - 78px);
+    border-radius: 12px;
+    border: 0.5px solid var(--border);
+    object-fit: contain;
+    background: var(--bg);
+  }
+  #capture-actions {
+    display: flex; gap: 10px; margin-top: 18px;
+    flex-wrap: wrap; justify-content: center;
+  }
+  .capture-action {
+    border: none; border-radius: 22px;
+    padding: 11px 20px;
+    font-size: 14px; font-weight: 600;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .capture-action.primary { background: var(--accent); color: #fff; }
+  .capture-action.secondary { background: var(--surface2); color: var(--text); }
+  .capture-action svg { width: 16px; height: 16px; }
+  .capture-action:active { opacity: 0.75; }
+
   /* ── 3D canvas ───────────────────────────────────── */
   #viewer {
     position: fixed;
@@ -218,6 +271,10 @@
 <!-- Top bar -->
 <div id="topbar">
   <span id="design-name">BambuMaker</span>
+  <button id="capture-btn" disabled title="Capture orthographic views">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+    Views
+  </button>
   <button id="download-btn" disabled>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
     STL
@@ -244,6 +301,22 @@
   <div id="design-list"></div>
 </div>
 
+<!-- Capture modal -->
+<div id="capture-modal">
+  <img id="capture-preview" alt="Orthographic views">
+  <div id="capture-actions">
+    <button class="capture-action secondary" id="capture-close">Close</button>
+    <button class="capture-action secondary" id="capture-download">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download
+    </button>
+    <button class="capture-action primary" id="capture-copy">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      Copy
+    </button>
+  </div>
+</div>
+
 <!-- Loading -->
 <div id="loading"><div class="spinner"></div><span>Loading…</span></div>
 
@@ -265,6 +338,12 @@ const $sheet    = document.getElementById('sheet');
 const $loading  = document.getElementById('loading');
 const $empty    = document.getElementById('empty-state');
 const $handle   = document.getElementById('sheet-handle-area');
+const $capture  = document.getElementById('capture-btn');
+const $capModal = document.getElementById('capture-modal');
+const $capImg   = document.getElementById('capture-preview');
+const $capClose = document.getElementById('capture-close');
+const $capDl    = document.getElementById('capture-download');
+const $capCopy  = document.getElementById('capture-copy');
 
 // ── Three.js setup ───────────────────────────────────────
 const viewerEl = document.getElementById('viewer');
@@ -313,6 +392,171 @@ new ResizeObserver(resizeRenderer).observe(viewerEl);
 resizeRenderer();
 animate();
 
+// ── Orthographic capture ─────────────────────────────────
+// The four views to render. `dir` is the direction the camera looks
+// (from camera toward the object); `up` orients the frame.
+const CAPTURE_VIEWS = [
+  { label: 'Top',       dir: new THREE.Vector3( 0, -1,  0), up: new THREE.Vector3(0, 0,  1) },
+  { label: 'Front',     dir: new THREE.Vector3( 0,  0, -1), up: new THREE.Vector3(0, 1,  0) },
+  { label: 'Side',      dir: new THREE.Vector3(-1,  0,  0), up: new THREE.Vector3(0, 1,  0) },
+  { label: 'Isometric', dir: new THREE.Vector3(-1, -1, -1), up: new THREE.Vector3(0, 1,  0) },
+];
+
+let captureRenderer = null;      // lazy offscreen renderer
+let lastCaptureBlob = null;      // current composite, for copy/download
+
+// Render one auto-fitted orthographic view into the capture renderer
+// and return its canvas. Fit is computed from the mesh's world bounding
+// box so the object fills the frame the same way in every view.
+function renderOrthoView(view, tilePx) {
+  if (!captureRenderer) {
+    captureRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, preserveDrawingBuffer: true });
+    captureRenderer.setClearColor(0x1c1c1e, 1);
+  }
+  captureRenderer.setPixelRatio(2);
+  captureRenderer.setSize(tilePx, tilePx, false);
+
+  scene.updateMatrixWorld(true);
+  const box = new THREE.Box3().setFromObject(meshObj);
+  const center = box.getCenter(new THREE.Vector3());
+  const sphere = box.getBoundingSphere(new THREE.Sphere());
+  const radius = sphere.radius || 1;
+  const dist = radius * 4 + 10;
+
+  const dir = view.dir.clone().normalize();
+  const cam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, dist + radius * 2 + 10);
+  cam.position.copy(center).addScaledVector(dir, -dist);
+  cam.up.copy(view.up);
+  cam.lookAt(center);
+  cam.updateMatrixWorld(true);
+
+  // Camera right/up axes in world space (columns 0 and 1 of matrixWorld).
+  const e = cam.matrixWorld.elements;
+  const right = new THREE.Vector3(e[0], e[1], e[2]);
+  const camUp = new THREE.Vector3(e[4], e[5], e[6]);
+
+  // Fit: largest projected half-extent of the 8 box corners.
+  let half = 0;
+  for (let xi = 0; xi < 2; xi++)
+    for (let yi = 0; yi < 2; yi++)
+      for (let zi = 0; zi < 2; zi++) {
+        const corner = new THREE.Vector3(
+          xi ? box.max.x : box.min.x,
+          yi ? box.max.y : box.min.y,
+          zi ? box.max.z : box.min.z
+        ).sub(center);
+        half = Math.max(half, Math.abs(corner.dot(right)), Math.abs(corner.dot(camUp)));
+      }
+  half *= 1.08; // small padding so the object never touches the edge
+  cam.left = -half; cam.right = half; cam.top = half; cam.bottom = -half;
+  cam.updateProjectionMatrix();
+
+  captureRenderer.render(scene, cam);
+  return captureRenderer.domElement;
+}
+
+// Build the 2×2 composite PNG with a name header and per-view labels.
+function buildComposite() {
+  const tile   = 512;   // logical tile size
+  const gap    = 22;
+  const margin = 34;
+  const headerH = 76;
+  const labelH  = 48;
+  const cols = 2, rows = 2;
+
+  const W = margin * 2 + tile * cols + gap * (cols - 1);
+  const H = margin * 2 + headerH + tile * rows + labelH * rows + gap * (rows - 1);
+
+  const canvas = document.createElement('canvas');
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // Background
+  ctx.fillStyle = '#111111';
+  ctx.fillRect(0, 0, W, H);
+
+  // Header — object name
+  ctx.fillStyle = '#f5f5f7';
+  ctx.font = '600 38px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(current ? current.name : 'model', W / 2, margin + headerH / 2);
+
+  // Tiles + labels
+  CAPTURE_VIEWS.forEach((view, i) => {
+    const col = i % cols, row = Math.floor(i / cols);
+    const x = margin + col * (tile + gap);
+    const y = margin + headerH + row * (tile + labelH + gap);
+
+    const tileCanvas = renderOrthoView(view, tile);
+    ctx.drawImage(tileCanvas, x, y, tile, tile);
+
+    // thin border around each tile
+    ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(x + 0.5, y + 0.5, tile - 1, tile - 1);
+
+    // angle label below the image
+    ctx.fillStyle = 'rgba(255,255,255,0.55)';
+    ctx.font = '600 26px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+    ctx.fillText(view.label, x + tile / 2, y + tile + labelH / 2);
+  });
+
+  return canvas;
+}
+
+function openCaptureModal() {
+  if (!meshObj) return;
+  const canvas = buildComposite();
+  $capImg.src = canvas.toDataURL('image/png');
+  canvas.toBlob((blob) => { lastCaptureBlob = blob; }, 'image/png');
+  $capCopy.textContent = 'Copy';
+  $capModal.classList.add('open');
+}
+
+function closeCaptureModal() { $capModal.classList.remove('open'); }
+
+async function copyComposite() {
+  try {
+    // Pass a Promise<Blob> so Safari keeps the user-gesture chain intact.
+    const item = new ClipboardItem({
+      'image/png': new Promise((resolve) => {
+        if (lastCaptureBlob) return resolve(lastCaptureBlob);
+        buildComposite().toBlob((b) => resolve(b), 'image/png');
+      }),
+    });
+    await navigator.clipboard.write([item]);
+    flashCopied('Copied!');
+  } catch (err) {
+    console.warn('Clipboard image copy failed', err);
+    flashCopied('Press & hold image to copy');
+  }
+}
+
+function flashCopied(msg) {
+  const prev = 'Copy';
+  $capCopy.textContent = msg;
+  setTimeout(() => { $capCopy.textContent = prev; }, 1600);
+}
+
+function downloadComposite() {
+  const name = (current ? current.name : 'model') + '-views.png';
+  const finish = (blob) => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = name; a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
+  if (lastCaptureBlob) finish(lastCaptureBlob);
+  else buildComposite().toBlob(finish, 'image/png');
+}
+
+$capture.addEventListener('click', openCaptureModal);
+$capClose.addEventListener('click', closeCaptureModal);
+$capCopy.addEventListener('click', copyComposite);
+$capDl.addEventListener('click', downloadComposite);
+$capModal.addEventListener('click', (e) => { if (e.target === $capModal) closeCaptureModal(); });
+
 // ── Load STL ─────────────────────────────────────────────
 function loadSTL(url) {
   $empty.style.display = 'none';
@@ -344,7 +588,10 @@ function loadSTL(url) {
     camera.position.set(0, -maxDim * scale * 1.8, maxDim * scale * 0.8);
     camera.lookAt(0, 0, 0);
     controls.reset();
+
+    $capture.disabled = false;
   }, undefined, () => {
+    $capture.disabled = true;
     $empty.querySelector('span').textContent = 'STL not compiled yet — push to trigger build';
     $empty.style.display = '';
   });
@@ -391,6 +638,7 @@ function selectDesign(d) {
     loadSTL(stlUrl);
   } else {
     if (meshObj) { scene.remove(meshObj); meshObj.geometry.dispose(); meshObj = null; }
+    $capture.disabled = true;
     $empty.querySelector('span').textContent = 'Build pending — push a commit to compile';
     $empty.style.display = '';
   }
