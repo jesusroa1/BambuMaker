@@ -1,18 +1,6 @@
 {
   "designs": [
     {
-      "name": "bowl",
-      "stl": "designs/bowl/bowl.stl",
-      "preview": "designs/bowl/preview.png",
-      "params": {
-        "diameter": "120",
-        "height": "50",
-        "wall_thickness": "3"
-      },
-      "lastCommit": "claude cowork info",
-      "updated": "2026-06-20"
-    },
-    {
       "name": "mug",
       "stl": "designs/mug/mug.stl",
       "preview": "designs/mug/preview.png",
@@ -24,21 +12,6 @@
         "handle_extend": "35"
       },
       "lastCommit": "claude cowork info",
-      "updated": "2026-06-20"
-    },
-    {
-      "name": "spoon",
-      "stl": "designs/spoon/spoon.stl",
-      "preview": "designs/spoon/preview.png",
-      "params": {
-        "bowl_length": "55",
-        "bowl_width": "40",
-        "bowl_depth": "10",
-        "handle_length": "110",
-        "handle_width": "13",
-        "wall": "2"
-      },
-      "lastCommit": "feat: add simple spoon design",
       "updated": "2026-06-20"
     },
     {
@@ -75,5 +48,5 @@
       "updated": "2026-06-21"
     }
   ],
-  "generated": "2026-06-30T12:30:42.135823+00:00"
+  "generated": "2026-07-02T20:23:34.548905+00:00"
 }
