@@ -1,6 +1,21 @@
 {
   "designs": [
     {
+      "name": "cake_topper_soccer_kick",
+      "stl": "designs/cake_topper_soccer_kick/cake_topper_soccer_kick.stl",
+      "preview": "designs/cake_topper_soccer_kick/preview.png",
+      "params": {
+        "figure_height_mm": "150",
+        "plate_thickness": "3",
+        "ball_diameter_mm": "30",
+        "ball_stake_len_mm": "40",
+        "ball_stake_width_mm": "10",
+        "gap_mm": "18"
+      },
+      "lastCommit": "Add soccer whiff-kick cake topper design",
+      "updated": "2026-07-08"
+    },
+    {
       "name": "mug",
       "stl": "designs/mug/mug.stl",
       "preview": "designs/mug/preview.png",
@@ -48,5 +63,5 @@
       "updated": "2026-06-21"
     }
   ],
-  "generated": "2026-07-03T13:37:45.432128+00:00"
+  "generated": "2026-07-08T11:57:24.281271+00:00"
 }
