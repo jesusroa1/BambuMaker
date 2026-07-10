@@ -10,8 +10,12 @@
 // With an AMS lite you can instead paint the raised regions in the slicer —
 // each color sits on its own plateau, so painting snaps cleanly to them.
 //
-// Art is ~130 mm wide x ~165 mm tall including the stake — fits the
-// A1 mini's 180x180 bed. No supports needed: every layer shrinks inward.
+// SIZE FLAG (per design principles, >150 mm axis): footprint measures
+// 129.9 x 164.5 mm including the 45 mm stake — inside the 170 mm safety
+// margin, and the ~50 mm of free bed width leaves room for the purge
+// tower that filament changes add. Drop scale_factor to 0.9 if the
+// slicer's auto-placed tower collides. No supports: every layer only
+// shrinks inward.
 // Floating pieces (ball, motion marks, splash) are tied to the figure by
 // the white sticker-style border, the way acrylic toppers do it.
 
