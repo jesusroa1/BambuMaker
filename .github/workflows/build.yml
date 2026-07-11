@@ -52,6 +52,26 @@ jobs:
               "$scad" \
               && echo "  ✓ preview.png" \
               || echo "  ✗ Preview render failed"
+
+            # Multi-color designs declare "// @part <name> #RRGGBB" lines:
+            # compile each part separately and package a colored 3MF.
+            parts=$(sed -n 's|^// @part \([a-zA-Z0-9_]*\) .*|\1|p' "$scad")
+            if [ -n "$parts" ]; then
+              parts_dir=$(mktemp -d)
+              ok=1
+              for p in $parts; do
+                openscad -o "$parts_dir/part_$p.stl" -D "part=\"$p\"" "$scad" \
+                  && echo "  ✓ part $p" \
+                  || { echo "  ✗ part $p failed"; ok=0; }
+              done
+              if [ "$ok" = "1" ]; then
+                python3 scripts/build_3mf.py "$scad" "$parts_dir" \
+                  "docs/designs/$name/$name.3mf" \
+                  && echo "  ✓ 3MF" \
+                  || echo "  ✗ 3MF packaging failed"
+              fi
+              rm -rf "$parts_dir"
+            fi
           done
 
       - name: Generate manifest

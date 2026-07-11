@@ -42,6 +42,27 @@ Example: `fix: widen handle to 15mm`
 - Parameters use `// @param <name> <value>` (one per line)
 - Generated files (`docs/designs/*/`) are committed by CI — don't edit them by hand
 
+## Multi-color designs (3MF)
+
+A design opts into multi-color by declaring one `// @part <name> #RRGGBB`
+line per color and honoring a `part` variable that renders just that body
+(with `part = "all"` as the default for the plain STL):
+
+```openscad
+// @part base #FFFFFF
+// @part accent #F0B323
+
+part = "all"; // "all" | "base" | "accent"
+
+if (part == "all" || part == "base") { ... }
+```
+
+CI then compiles each part with `-D part="<name>"` and runs
+`scripts/build_3mf.py` to package them into `docs/designs/<name>/<name>.3mf`
+with the declared colors. The viewer renders the colored 3MF and offers it
+as a download; in Bambu Studio each part maps to its own filament slot.
+Part bodies must not overlap — stack them in Z or keep them side by side.
+
 ## What the CI does
 
 `.github/workflows/build.yml` on every push to `main`:

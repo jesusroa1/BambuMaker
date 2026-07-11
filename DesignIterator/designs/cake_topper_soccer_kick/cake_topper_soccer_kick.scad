@@ -19,6 +19,15 @@
 // Floating pieces (ball, motion marks, splash) are tied to the figure by
 // the white sticker-style border, the way acrylic toppers do it.
 
+// Multi-color export: each @part line below names a single-color body and
+// its filament color. CI compiles each with -D part="<name>" and packages
+// them into <design>.3mf, where Bambu Studio lets you assign one filament
+// per part. The plain STL (part = "all") stays single-body for the viewer.
+//
+// @part base #FFFFFF
+// @part yellow #F0B323
+// @part black #1A1A1A
+
 // @param base_thickness 1.6
 // @param yellow_relief 0.6
 // @param black_relief 1.2
@@ -29,6 +38,8 @@ yellow_relief  = 0.6;   // yellow raised above the base
 black_relief   = 1.2;   // black raised above the base (hides the yellow band)
 scale_factor   = 1.0;   // uniform XY resize of the whole topper
 
+part = "all";           // "all" | "base" | "yellow" | "black"
+
 // SVG canvas size in mm. All three SVGs were traced from the same canvas,
 // so importing them un-centered keeps the layers perfectly registered.
 canvas_w = 157.97;
@@ -38,16 +49,19 @@ scale([scale_factor, scale_factor, 1])
 translate([-canvas_w / 2, -canvas_h / 2, 0]) {
 
     // white base: full silhouette + sticker border + cake stake
-    linear_extrude(height = base_thickness)
-        import("topper_base.svg");
+    if (part == "all" || part == "base")
+        linear_extrude(height = base_thickness)
+            import("topper_base.svg");
 
     // yellow fills
-    translate([0, 0, base_thickness])
-        linear_extrude(height = yellow_relief)
-            import("topper_yellow.svg");
+    if (part == "all" || part == "yellow")
+        translate([0, 0, base_thickness])
+            linear_extrude(height = yellow_relief)
+                import("topper_yellow.svg");
 
     // black linework sits proudest so it reads crisply
-    translate([0, 0, base_thickness])
-        linear_extrude(height = black_relief)
-            import("topper_black.svg");
+    if (part == "all" || part == "black")
+        translate([0, 0, base_thickness])
+            linear_extrude(height = black_relief)
+                import("topper_black.svg");
 }
