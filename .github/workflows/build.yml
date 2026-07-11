@@ -10,6 +10,10 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Hard ceiling so a runaway render can never sit for GitHub's default
+    # 6 hours holding up the publish. Per-design timeouts (below) normally
+    # catch trouble long before this.
+    timeout-minutes: 25
     defaults:
       run:
         working-directory: DesignIterator
@@ -28,6 +32,13 @@ jobs:
         run: |
           mkdir -p docs/designs
 
+          # A single slow/hanging design (e.g. a heavy SVG import) must never
+          # stall the whole publish. Bound each OpenSCAD call; on timeout we
+          # skip that artifact and keep going, so every other design and the
+          # manifest still get regenerated and published.
+          STL_TIMEOUT=300   # seconds
+          PNG_TIMEOUT=240   # seconds
+
           for design_dir in designs/*/; do
             name=$(basename "$design_dir")
             scad="$design_dir$name.scad"
@@ -40,18 +51,42 @@ jobs:
             echo "▶ Building $name..."
             mkdir -p "docs/designs/$name"
 
-            openscad -o "docs/designs/$name/$name.stl" "$scad" \
-              && echo "  ✓ STL" \
-              || echo "  ✗ STL export failed"
+            # Write to a temp file and only swap it in on success, so a timeout
+            # mid-write can't corrupt or half-overwrite the previously good STL.
+            stl_out="docs/designs/$name/$name.stl"
+            stl_tmp="docs/designs/$name/$name.new.stl"
+            if timeout "${STL_TIMEOUT}s" openscad -o "$stl_tmp" "$scad"; then
+              mv "$stl_tmp" "$stl_out"
+              echo "  ✓ STL"
+            else
+              rc=$?
+              rm -f "$stl_tmp"
+              if [ "$rc" -eq 124 ]; then
+                echo "  ✗ STL export timed out after ${STL_TIMEOUT}s — keeping previous STL"
+              else
+                echo "  ✗ STL export failed (exit $rc)"
+              fi
+            fi
 
-            xvfb-run -a openscad \
+            png_out="docs/designs/$name/preview.png"
+            png_tmp="docs/designs/$name/preview.new.png"
+            if timeout "${PNG_TIMEOUT}s" xvfb-run -a openscad \
               --camera=0,0,0,50,0,25,250 \
               --imgsize=600,600 \
               --colorscheme=Tomorrow \
-              -o "docs/designs/$name/preview.png" \
-              "$scad" \
-              && echo "  ✓ preview.png" \
-              || echo "  ✗ Preview render failed"
+              -o "$png_tmp" \
+              "$scad"; then
+              mv "$png_tmp" "$png_out"
+              echo "  ✓ preview.png"
+            else
+              rc=$?
+              rm -f "$png_tmp"
+              if [ "$rc" -eq 124 ]; then
+                echo "  ✗ Preview render timed out after ${PNG_TIMEOUT}s — keeping previous preview"
+              else
+                echo "  ✗ Preview render failed (exit $rc)"
+              fi
+            fi
           done
 
       - name: Generate manifest
