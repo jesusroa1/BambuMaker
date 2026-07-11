@@ -3,6 +3,7 @@
     {
       "name": "cake_topper_soccer_kick",
       "stl": "designs/cake_topper_soccer_kick/cake_topper_soccer_kick.stl",
+      "threeMF": "designs/cake_topper_soccer_kick/cake_topper_soccer_kick.3mf",
       "preview": "designs/cake_topper_soccer_kick/preview.png",
       "params": {
         "base_thickness": "1.6",
@@ -10,12 +11,13 @@
         "black_relief": "1.2",
         "scale_factor": "1.0"
       },
-      "lastCommit": "Flag >150mm footprint in topper header per design principles",
-      "updated": "2026-07-10"
+      "lastCommit": "Add multi-color 3MF pipeline for cake topper",
+      "updated": "2026-07-11"
     },
     {
       "name": "mug",
       "stl": "designs/mug/mug.stl",
+      "threeMF": null,
       "preview": "designs/mug/preview.png",
       "params": {
         "height": "100",
@@ -30,6 +32,7 @@
     {
       "name": "tesla_lotion_holder",
       "stl": "designs/tesla_lotion_holder/tesla_lotion_holder.stl",
+      "threeMF": null,
       "preview": "designs/tesla_lotion_holder/preview.png",
       "params": {
         "tray_w": "270",
@@ -46,6 +49,7 @@
     {
       "name": "watch_stand",
       "stl": "designs/watch_stand/watch_stand.stl",
+      "threeMF": null,
       "preview": "designs/watch_stand/preview.png",
       "params": {
         "base_thick": "14",
@@ -61,5 +65,5 @@
       "updated": "2026-06-21"
     }
   ],
-  "generated": "2026-07-11T15:16:23.752574+00:00"
+  "generated": "2026-07-11T19:26:54.285680+00:00"
 }
