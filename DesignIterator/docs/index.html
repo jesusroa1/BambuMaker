@@ -50,7 +50,7 @@
     font-size: 15px; font-weight: 600;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
-  #download-btn {
+  #download-btn, #download-3mf-btn {
     background: var(--accent);
     color: #fff;
     border: none;
@@ -62,7 +62,8 @@
     display: flex; align-items: center; gap: 5px;
   }
   #download-btn:disabled { background: var(--surface2); color: var(--muted); }
-  #download-btn svg { width: 14px; height: 14px; }
+  #download-btn svg, #download-3mf-btn svg { width: 14px; height: 14px; }
+  #download-3mf-btn { background: #30d158; color: #003310; }
 
   #capture-btn {
     background: var(--surface2);
@@ -275,6 +276,10 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
     Views
   </button>
+  <button id="download-3mf-btn" style="display:none">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    3MF
+  </button>
   <button id="download-btn" disabled>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
     STL
@@ -322,6 +327,8 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/fflate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/3MFLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script>
 // ── State ────────────────────────────────────────────────
@@ -332,6 +339,7 @@ let sheetOpen = false;
 // ── DOM refs ─────────────────────────────────────────────
 const $name     = document.getElementById('design-name');
 const $dl       = document.getElementById('download-btn');
+const $dl3mf    = document.getElementById('download-3mf-btn');
 const $params   = document.getElementById('params-strip');
 const $list     = document.getElementById('design-list');
 const $sheet    = document.getElementById('sheet');
@@ -557,43 +565,65 @@ $capCopy.addEventListener('click', copyComposite);
 $capDl.addEventListener('click', downloadComposite);
 $capModal.addEventListener('click', (e) => { if (e.target === $capModal) closeCaptureModal(); });
 
-// ── Load STL ─────────────────────────────────────────────
-function loadSTL(url) {
+// ── Load model (colored 3MF preferred, blue STL fallback) ─
+function clearModel() {
+  if (meshObj) {
+    scene.remove(meshObj);
+    meshObj.traverse(o => { if (o.geometry) o.geometry.dispose(); });
+    meshObj = null;
+  }
+}
+
+// Center, normalize to ~120 units, convert z-up → y-up, add to scene.
+// Flat plaques (cake toppers, signs) get flipped the other way so their
+// relief face — not their flat underside — greets the camera.
+function setupModel(obj) {
   $empty.style.display = 'none';
-  if (meshObj) { scene.remove(meshObj); meshObj.geometry.dispose(); }
+  clearModel();
 
-  const loader = new THREE.STLLoader();
-  loader.load(url, (geometry) => {
-    geometry.computeBoundingBox();
-    const box = geometry.boundingBox;
-    const center = new THREE.Vector3();
-    box.getCenter(center);
-    geometry.translate(-center.x, -center.y, -center.z);
+  const rawSize = new THREE.Box3().setFromObject(obj).getSize(new THREE.Vector3());
+  const isFlat = rawSize.z < 0.25 * Math.min(rawSize.x, rawSize.y);
+  obj.rotation.x = isFlat ? Math.PI / 2 : -Math.PI / 2;
+  const pivot = new THREE.Group();
+  pivot.add(obj);
 
-    const size = new THREE.Vector3();
-    box.getSize(size);
-    const maxDim = Math.max(size.x, size.y, size.z);
-    const scale = 120 / maxDim;
+  const box = new THREE.Box3().setFromObject(pivot);
+  const center = box.getCenter(new THREE.Vector3());
+  obj.position.sub(center);
+  const size = box.getSize(new THREE.Vector3());
+  const maxDim = Math.max(size.x, size.y, size.z) || 1;
+  pivot.scale.setScalar(120 / maxDim);
 
+  meshObj = pivot;
+  scene.add(pivot);
+
+  camera.position.set(0, -216, 96);
+  camera.lookAt(0, 0, 0);
+  controls.reset();
+
+  $capture.disabled = false;
+}
+
+function showLoadError() {
+  $capture.disabled = true;
+  $empty.querySelector('span').textContent = 'STL not compiled yet — push to trigger build';
+  $empty.style.display = '';
+}
+
+function loadSTL(url) {
+  new THREE.STLLoader().load(url, (geometry) => {
     const mat = new THREE.MeshPhongMaterial({
       color: 0x0a84ff,
       specular: 0x333333,
       shininess: 30,
     });
-    meshObj = new THREE.Mesh(geometry, mat);
-    meshObj.scale.setScalar(scale);
-    meshObj.rotation.x = -Math.PI / 2;
-    scene.add(meshObj);
+    setupModel(new THREE.Mesh(geometry, mat));
+  }, undefined, showLoadError);
+}
 
-    camera.position.set(0, -maxDim * scale * 1.8, maxDim * scale * 0.8);
-    camera.lookAt(0, 0, 0);
-    controls.reset();
-
-    $capture.disabled = false;
-  }, undefined, () => {
-    $capture.disabled = true;
-    $empty.querySelector('span').textContent = 'STL not compiled yet — push to trigger build';
-    $empty.style.display = '';
+function load3MF(url, fallbackStlUrl) {
+  new THREE.ThreeMFLoader().load(url, setupModel, undefined, () => {
+    if (fallbackStlUrl) loadSTL(fallbackStlUrl); else showLoadError();
   });
 }
 
@@ -617,7 +647,7 @@ function selectDesign(d) {
     $params.appendChild(commit);
   }
 
-  // Download button
+  // Download buttons — 3MF (multi-color) shown only when the design has one
   if (d.stl) {
     $dl.disabled = false;
     $dl.onclick = () => {
@@ -630,14 +660,28 @@ function selectDesign(d) {
     $dl.disabled = true;
     $dl.onclick = null;
   }
-
-  // Load STL — append build timestamp so browsers don't serve a stale cached STL
-  // after CI regenerates the file (manifest is always fetched fresh; STL was not).
-  if (d.stl) {
-    const stlUrl = d.stl + '?v=' + encodeURIComponent(manifest.generated || Date.now());
-    loadSTL(stlUrl);
+  if (d.threeMF) {
+    $dl3mf.style.display = 'flex';
+    $dl3mf.onclick = () => {
+      const a = document.createElement('a');
+      a.href = d.threeMF;
+      a.download = `${d.name}.3mf`;
+      a.click();
+    };
   } else {
-    if (meshObj) { scene.remove(meshObj); meshObj.geometry.dispose(); meshObj = null; }
+    $dl3mf.style.display = 'none';
+    $dl3mf.onclick = null;
+  }
+
+  // Load model — append build timestamp so browsers don't serve a stale cached
+  // file after CI regenerates it (manifest is always fetched fresh).
+  const bust = '?v=' + encodeURIComponent(manifest.generated || Date.now());
+  if (d.threeMF && THREE.ThreeMFLoader) {
+    load3MF(d.threeMF + bust, d.stl ? d.stl + bust : null);
+  } else if (d.stl) {
+    loadSTL(d.stl + bust);
+  } else {
+    clearModel();
     $capture.disabled = true;
     $empty.querySelector('span').textContent = 'Build pending — push a commit to compile';
     $empty.style.display = '';
