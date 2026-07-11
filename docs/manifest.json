@@ -5,15 +5,13 @@
       "stl": "designs/cake_topper_soccer_kick/cake_topper_soccer_kick.stl",
       "preview": "designs/cake_topper_soccer_kick/preview.png",
       "params": {
-        "figure_height_mm": "150",
-        "plate_thickness": "3",
-        "ball_diameter_mm": "30",
-        "ball_stake_len_mm": "40",
-        "ball_stake_width_mm": "10",
-        "gap_mm": "18"
+        "base_thickness": "1.6",
+        "yellow_relief": "0.6",
+        "black_relief": "1.2",
+        "scale_factor": "1.0"
       },
-      "lastCommit": "Add soccer whiff-kick cake topper design",
-      "updated": "2026-07-08"
+      "lastCommit": "Flag >150mm footprint in topper header per design principles",
+      "updated": "2026-07-10"
     },
     {
       "name": "mug",
@@ -63,5 +61,5 @@
       "updated": "2026-06-21"
     }
   ],
-  "generated": "2026-07-08T11:57:24.281271+00:00"
+  "generated": "2026-07-11T15:16:23.752574+00:00"
 }
