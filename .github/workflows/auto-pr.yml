@@ -30,18 +30,19 @@ jobs:
             exit 0
           fi
 
-          # Build a title from recent commits on this branch
+          # Build a title from the branch's first commit (the feature commit)
           COMMITS=$(git log origin/main..HEAD --pretty=format:"- %s" | head -10)
-          TITLE=$(git log origin/main..HEAD --pretty=format:"%s" | head -1)
+          TITLE=$(git log origin/main..HEAD --pretty=format:"%s" --reverse | head -1)
+
+          {
+            echo "Auto-generated PR from \`$BRANCH\`."
+            echo
+            echo "## Changes"
+            echo "$COMMITS"
+          } > /tmp/pr_body.md
 
           gh pr create \
             --title "$TITLE" \
-            --body "$(cat <<EOF
-Auto-generated PR from \`$BRANCH\`.
-
-## Changes
-$COMMITS
-EOF
-)" \
+            --body-file /tmp/pr_body.md \
             --base main \
             --head "$BRANCH"
