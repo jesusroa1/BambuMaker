@@ -32,10 +32,12 @@ import zipfile
 
 
 def parse_parts(scad_path):
+    """Read @part declarations from a design source (.scad `//` or .py `#`)."""
     parts = []
     with open(scad_path, encoding="utf-8") as f:
         for line in f:
-            m = re.match(r"//\s*@part\s+(\w+)\s+(#[0-9A-Fa-f]{6})", line.strip())
+            m = re.match(r"(?://|#)\s*@part\s+(\w+)\s+(#[0-9A-Fa-f]{6})",
+                         line.strip())
             if m:
                 parts.append((m.group(1), m.group(2).upper()))
     return parts

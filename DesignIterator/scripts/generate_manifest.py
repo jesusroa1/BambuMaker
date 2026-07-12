@@ -25,11 +25,12 @@ def git_log(path, fmt):
         return ""
 
 
-def extract_params(scad_path):
+def extract_params(src_path):
+    """Read @param declarations (.scad `//` comments or .py `#` comments)."""
     params = {}
-    with open(scad_path, encoding="utf-8") as f:
+    with open(src_path, encoding="utf-8") as f:
         for line in f:
-            m = re.match(r"//\s*@param\s+(\w+)\s+(.+)", line.strip())
+            m = re.match(r"(?://|#)\s*@param\s+(\w+)\s+(.+)", line.strip())
             if m:
                 params[m.group(1)] = m.group(2).strip()
     return params
@@ -43,14 +44,20 @@ def main():
         return
 
     for name in sorted(os.listdir(DESIGNS_DIR)):
-        scad_path = os.path.join(DESIGNS_DIR, name, f"{name}.scad")
-        if not os.path.exists(scad_path):
+        # A design is either an OpenSCAD file or a Python (SDF) script.
+        src_path = next(
+            (p for p in (os.path.join(DESIGNS_DIR, name, f"{name}.scad"),
+                         os.path.join(DESIGNS_DIR, name, f"{name}.py"))
+             if os.path.exists(p)),
+            None,
+        )
+        if src_path is None:
             continue
 
-        params = extract_params(scad_path)
+        params = extract_params(src_path)
 
-        last_commit = git_log(scad_path, "%s") or "initial design"
-        raw_date   = git_log(scad_path, "%ci")
+        last_commit = git_log(src_path, "%s") or "initial design"
+        raw_date   = git_log(src_path, "%ci")
         updated    = raw_date[:10] if raw_date else datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
         stl_path     = f"designs/{name}/{name}.stl"

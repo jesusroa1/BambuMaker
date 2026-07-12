@@ -63,6 +63,23 @@ with the declared colors. The viewer renders the colored 3MF and offers it
 as a download; in Bambu Studio each part maps to its own filament slot.
 Part bodies must not overlap — stack them in Z or keep them side by side.
 
+## Python (SDF) designs
+
+Organic/figurine designs that need smooth blended surfaces (which OpenSCAD's
+hard unions can't do) can be written as `designs/<name>/<name>.py` instead of
+a `.scad`. The script models the shape with signed distance fields using
+`scripts/sdflib.py` (smooth unions -> vinyl-toy fillets, marching cubes ->
+watertight meshes) and must:
+
+1. Declare `# @param <name> <value>` and `# @part <name> #RRGGBB` comment
+   lines (Python `#` comments work everywhere `.scad` files use `//`)
+2. Accept `--outdir DIR` (write `<name>.stl` + `preview.png` there) and
+   `--parts-dir DIR` (write `part_<color>.stl` per @part there)
+
+CI runs the script, then packages the parts with `scripts/build_3mf.py`
+exactly like a multi-color `.scad`. Python deps: numpy, scikit-image,
+matplotlib, fast-simplification. `rowing_guy` is the reference example.
+
 ## What the CI does
 
 `.github/workflows/build.yml` on every push to `main`:

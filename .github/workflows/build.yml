@@ -24,6 +24,9 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y openscad xvfb
 
+      - name: Install Python deps (SDF designs)
+        run: pip install numpy scikit-image matplotlib fast-simplification
+
       - name: Compile designs
         run: |
           mkdir -p docs/designs
@@ -31,9 +34,30 @@ jobs:
           for design_dir in designs/*/; do
             name=$(basename "$design_dir")
             scad="$design_dir$name.scad"
+            pysrc="$design_dir$name.py"
+
+            # Python (SDF) designs: the script writes the STL + preview and
+            # per-color part STLs itself; we just package the colored 3MF.
+            if [ -f "$pysrc" ]; then
+              echo "▶ Building $name (python)..."
+              mkdir -p "docs/designs/$name"
+              parts_dir=$(mktemp -d)
+              if python3 "$pysrc" --outdir "docs/designs/$name" \
+                   --parts-dir "$parts_dir"; then
+                echo "  ✓ STL + preview"
+                python3 scripts/build_3mf.py "$pysrc" "$parts_dir" \
+                  "docs/designs/$name/$name.3mf" \
+                  && echo "  ✓ 3MF" \
+                  || echo "  ✗ 3MF packaging failed"
+              else
+                echo "  ✗ python build failed"
+              fi
+              rm -rf "$parts_dir"
+              continue
+            fi
 
             if [ ! -f "$scad" ]; then
-              echo "⚠️  No $name.scad found in $design_dir — skipping"
+              echo "⚠️  No $name.scad or $name.py found in $design_dir — skipping"
               continue
             fi
 
