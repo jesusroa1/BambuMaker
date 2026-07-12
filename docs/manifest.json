@@ -4,6 +4,7 @@
       "name": "cake_topper_soccer_kick",
       "stl": "designs/cake_topper_soccer_kick/cake_topper_soccer_kick.stl",
       "threeMF": "designs/cake_topper_soccer_kick/cake_topper_soccer_kick.3mf",
+      "bambu3MF": "designs/cake_topper_soccer_kick/cake_topper_soccer_kick_bambu.3mf",
       "preview": "designs/cake_topper_soccer_kick/preview.png",
       "params": {
         "base_thickness": "1.6",
@@ -18,6 +19,7 @@
       "name": "mug",
       "stl": "designs/mug/mug.stl",
       "threeMF": null,
+      "bambu3MF": null,
       "preview": "designs/mug/preview.png",
       "params": {
         "height": "100",
@@ -33,6 +35,7 @@
       "name": "tesla_lotion_holder",
       "stl": "designs/tesla_lotion_holder/tesla_lotion_holder.stl",
       "threeMF": null,
+      "bambu3MF": null,
       "preview": "designs/tesla_lotion_holder/preview.png",
       "params": {
         "tray_w": "270",
@@ -50,6 +53,7 @@
       "name": "watch_stand",
       "stl": "designs/watch_stand/watch_stand.stl",
       "threeMF": null,
+      "bambu3MF": null,
       "preview": "designs/watch_stand/preview.png",
       "params": {
         "base_thick": "14",
@@ -65,5 +69,5 @@
       "updated": "2026-06-21"
     }
   ],
-  "generated": "2026-07-11T19:26:54.285680+00:00"
+  "generated": "2026-07-12T20:47:59.384243+00:00"
 }
