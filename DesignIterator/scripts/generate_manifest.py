@@ -55,17 +55,20 @@ def main():
 
         stl_path     = f"designs/{name}/{name}.stl"
         threemf_path = f"designs/{name}/{name}.3mf"
+        bambu_path   = f"designs/{name}/{name}_bambu.3mf"
         preview_path = f"designs/{name}/preview.png"
 
         # Check whether compiled artifacts actually exist
         stl_exists     = os.path.exists(os.path.join("docs", stl_path))
         threemf_exists = os.path.exists(os.path.join("docs", threemf_path))
+        bambu_exists   = os.path.exists(os.path.join("docs", bambu_path))
         preview_exists = os.path.exists(os.path.join("docs", preview_path))
 
         designs.append({
             "name":       name,
             "stl":        stl_path     if stl_exists     else None,
             "threeMF":    threemf_path if threemf_exists else None,
+            "bambu3MF":   bambu_path   if bambu_exists   else None,
             "preview":    preview_path if preview_exists else None,
             "params":     params,
             "lastCommit": last_commit,

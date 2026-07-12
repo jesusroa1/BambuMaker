@@ -660,11 +660,15 @@ function selectDesign(d) {
     $dl.disabled = true;
     $dl.onclick = null;
   }
-  if (d.threeMF) {
+  // Prefer the Bambu Studio project flavor for download: it keeps each color
+  // part mapped to its own filament. The generic 3MF (used for rendering)
+  // imports into Bambu Studio as a single flattened object.
+  const dl3mfFile = d.bambu3MF || d.threeMF;
+  if (dl3mfFile) {
     $dl3mf.style.display = 'flex';
     $dl3mf.onclick = () => {
       const a = document.createElement('a');
-      a.href = d.threeMF;
+      a.href = dl3mfFile;
       a.download = `${d.name}.3mf`;
       a.click();
     };
