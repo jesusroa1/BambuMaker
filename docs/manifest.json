@@ -16,7 +16,7 @@
         "tab_length": "14",
         "tab_width": "34"
       },
-      "lastCommit": "Add blender lid design for 80 mm jar mouth",
+      "lastCommit": "build: regenerate docs [skip ci]",
       "updated": "2026-07-13"
     },
     {
@@ -31,8 +31,28 @@
         "black_relief": "1.2",
         "scale_factor": "1.0"
       },
-      "lastCommit": "Merge pull request #17 from jesusroa1/agent/speed-up-design-builds",
-      "updated": "2026-07-12"
+      "lastCommit": "build: regenerate docs [skip ci]",
+      "updated": "2026-07-13"
+    },
+    {
+      "name": "lid_fit_tester",
+      "stl": "designs/lid_fit_tester/lid_fit_tester.stl",
+      "threeMF": null,
+      "bambu3MF": null,
+      "preview": "designs/lid_fit_tester/preview.png",
+      "params": {
+        "jar_inner_diameter": "80",
+        "clearance_start": "0.15",
+        "clearance_step": "0.1",
+        "disc_count": "4",
+        "disc_thickness": "2",
+        "label_size": "9",
+        "label_height": "0.6",
+        "grip_length": "50",
+        "grip_height": "8"
+      },
+      "lastCommit": "Add lid fit tester plate with four labeled clearance discs",
+      "updated": "2026-07-13"
     },
     {
       "name": "mug",
@@ -47,8 +67,8 @@
         "base_thickness": "4",
         "handle_extend": "35"
       },
-      "lastCommit": "Merge pull request #17 from jesusroa1/agent/speed-up-design-builds",
-      "updated": "2026-07-12"
+      "lastCommit": "build: regenerate docs [skip ci]",
+      "updated": "2026-07-13"
     },
     {
       "name": "norwegian_rower_cake_topper",
@@ -61,8 +81,8 @@
         "color_relief": "0.6",
         "scale_factor": "0.128"
       },
-      "lastCommit": "Merge pull request #17 from jesusroa1/agent/speed-up-design-builds",
-      "updated": "2026-07-12"
+      "lastCommit": "build: regenerate docs [skip ci]",
+      "updated": "2026-07-13"
     },
     {
       "name": "tesla_lotion_holder",
@@ -79,8 +99,8 @@
         "hook_h": "15",
         "corner_r": "5"
       },
-      "lastCommit": "Merge pull request #17 from jesusroa1/agent/speed-up-design-builds",
-      "updated": "2026-07-12"
+      "lastCommit": "build: regenerate docs [skip ci]",
+      "updated": "2026-07-13"
     },
     {
       "name": "watch_stand",
@@ -98,9 +118,9 @@
         "head_body_height": "8",
         "head_dome_height": "12"
       },
-      "lastCommit": "Merge pull request #17 from jesusroa1/agent/speed-up-design-builds",
-      "updated": "2026-07-12"
+      "lastCommit": "build: regenerate docs [skip ci]",
+      "updated": "2026-07-13"
     }
   ],
-  "generated": "2026-07-13T04:00:47.156437+00:00"
+  "generated": "2026-07-13T21:31:53.759806+00:00"
 }
