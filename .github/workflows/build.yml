@@ -7,6 +7,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: build-designs-main
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,62 +21,116 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 2
+
+      - name: Detect changed designs
+        id: changes
+        working-directory: ${{ github.workspace }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          before="${{ github.event.before }}"
+          sha="${{ github.sha }}"
+          all_designs=false
+
+          if [ "$before" = "0000000000000000000000000000000000000000" ] \
+             || ! git cat-file -e "$before^{commit}" 2>/dev/null; then
+            all_designs=true
+            changed_files=""
+          else
+            changed_files=$(git diff --name-only "$before" "$sha")
+          fi
+
+          if grep -Eq '^(.github/workflows/build.yml|DesignIterator/scripts/)' \
+              <<< "$changed_files"; then
+            all_designs=true
+          fi
+
+          if [ "$all_designs" = true ]; then
+            designs=$(find DesignIterator/designs -mindepth 1 -maxdepth 1 \
+              -type d -printf '%f\n' | sort)
+          else
+            designs=$(sed -n \
+              's|^DesignIterator/designs/\([^/]*\)/.*|\1|p' \
+              <<< "$changed_files" | sort -u)
+          fi
+
+          if [ -n "$designs" ]; then
+            {
+              echo "has_changes=true"
+              echo "designs<<EOF"
+              echo "$designs"
+              echo "EOF"
+            } >> "$GITHUB_OUTPUT"
+            echo "Changed designs:"
+            echo "$designs"
+          else
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "No design geometry changed."
+          fi
 
       - name: Install OpenSCAD + Xvfb
+        if: steps.changes.outputs.has_changes == 'true'
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y openscad xvfb
 
-      - name: Compile designs
+      - name: Compile changed designs in parallel
+        if: steps.changes.outputs.has_changes == 'true'
+        env:
+          CHANGED_DESIGNS: ${{ steps.changes.outputs.designs }}
         run: |
+          set -euo pipefail
           mkdir -p docs/designs
 
-          for design_dir in designs/*/; do
-            name=$(basename "$design_dir")
-            scad="$design_dir$name.scad"
+          build_design() {
+            name="$1"
+            design_dir="designs/$name"
+            scad="$design_dir/$name.scad"
 
             if [ ! -f "$scad" ]; then
-              echo "⚠️  No $name.scad found in $design_dir — skipping"
-              continue
+              echo "Removing generated files for deleted design: $name"
+              rm -rf "docs/designs/$name"
+              return
             fi
 
             echo "▶ Building $name..."
-            mkdir -p "docs/designs/$name"
+            out_dir="docs/designs/$name"
+            rm -rf "$out_dir"
+            mkdir -p "$out_dir"
 
-            openscad -o "docs/designs/$name/$name.stl" "$scad" \
-              && echo "  ✓ STL" \
-              || echo "  ✗ STL export failed"
+            openscad -o "$out_dir/$name.stl" "$scad"
+            echo "  ✓ $name STL"
 
             xvfb-run -a openscad \
               --camera=0,0,0,50,0,25,250 \
               --imgsize=600,600 \
               --colorscheme=Tomorrow \
-              -o "docs/designs/$name/preview.png" \
-              "$scad" \
-              && echo "  ✓ preview.png" \
-              || echo "  ✗ Preview render failed"
+              -o "$out_dir/preview.png" "$scad"
+            echo "  ✓ $name preview"
 
-            # Multi-color designs declare "// @part <name> #RRGGBB" lines:
-            # compile each part separately and package a colored 3MF.
             parts=$(sed -n 's|^// @part \([a-zA-Z0-9_]*\) .*|\1|p' "$scad")
             if [ -n "$parts" ]; then
               parts_dir=$(mktemp -d)
-              ok=1
+              trap 'rm -rf "$parts_dir"' RETURN
               for p in $parts; do
-                openscad -o "$parts_dir/part_$p.stl" -D "part=\"$p\"" "$scad" \
-                  && echo "  ✓ part $p" \
-                  || { echo "  ✗ part $p failed"; ok=0; }
+                openscad -o "$parts_dir/part_$p.stl" \
+                  -D "part=\"$p\"" "$scad"
+                echo "  ✓ $name part $p"
               done
-              if [ "$ok" = "1" ]; then
-                python3 scripts/build_3mf.py "$scad" "$parts_dir" \
-                  "docs/designs/$name/$name.3mf" \
-                  && echo "  ✓ 3MF" \
-                  || echo "  ✗ 3MF packaging failed"
-              fi
+              python3 scripts/build_3mf.py "$scad" "$parts_dir" \
+                "$out_dir/$name.3mf"
               rm -rf "$parts_dir"
+              trap - RETURN
+              echo "  ✓ $name 3MF files"
             fi
-          done
+          }
+
+          export -f build_design
+          printf '%s\n' "$CHANGED_DESIGNS" \
+            | sed '/^$/d' \
+            | xargs -r -n 1 -P 2 bash -euo pipefail -c 'build_design "$1"' _
 
       - name: Generate manifest
         run: python3 scripts/generate_manifest.py
