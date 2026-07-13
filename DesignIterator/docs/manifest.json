@@ -1,6 +1,21 @@
 {
   "designs": [
     {
+      "name": "cake_topper_norway_rowing",
+      "stl": null,
+      "threeMF": "designs/cake_topper_norway_rowing/cake_topper_norway_rowing.3mf",
+      "bambu3MF": "designs/cake_topper_norway_rowing/cake_topper_norway_rowing_bambu.3mf",
+      "preview": "designs/cake_topper_norway_rowing/preview.png",
+      "params": {
+        "base_thickness": "1.6",
+        "color_relief": "0.8",
+        "black_relief": "1.2",
+        "scale_factor": "1.0"
+      },
+      "lastCommit": "initial design",
+      "updated": "2026-07-13"
+    },
+    {
       "name": "cake_topper_soccer_kick",
       "stl": "designs/cake_topper_soccer_kick/cake_topper_soccer_kick.stl",
       "threeMF": "designs/cake_topper_soccer_kick/cake_topper_soccer_kick.3mf",
@@ -69,5 +84,5 @@
       "updated": "2026-06-21"
     }
   ],
-  "generated": "2026-07-12T20:47:59.384243+00:00"
+  "generated": "2026-07-13T01:34:01.530500+00:00"
 }
