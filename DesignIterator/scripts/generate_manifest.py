@@ -38,6 +38,17 @@ def extract_params(scad_path):
 def main():
     designs = []
 
+    # A shallow CI checkout may not contain the original commit for an
+    # unchanged design. Preserve its prior display metadata in that case.
+    previous = {}
+    try:
+        with open(OUTPUT_PATH, encoding="utf-8") as f:
+            previous = {
+                d["name"]: d for d in json.load(f).get("designs", [])
+            }
+    except (OSError, ValueError, KeyError):
+        pass
+
     if not os.path.isdir(DESIGNS_DIR):
         print(f"No '{DESIGNS_DIR}' directory found.")
         return
@@ -49,9 +60,11 @@ def main():
 
         params = extract_params(scad_path)
 
-        last_commit = git_log(scad_path, "%s") or "initial design"
+        prior       = previous.get(name, {})
+        last_commit = git_log(scad_path, "%s") or prior.get("lastCommit", "initial design")
         raw_date   = git_log(scad_path, "%ci")
-        updated    = raw_date[:10] if raw_date else datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        updated    = (raw_date[:10] if raw_date else
+                      prior.get("updated", datetime.now(timezone.utc).strftime("%Y-%m-%d")))
 
         stl_path     = f"designs/{name}/{name}.stl"
         threemf_path = f"designs/{name}/{name}.3mf"
