@@ -1,6 +1,25 @@
 {
   "designs": [
     {
+      "name": "blender_lid",
+      "stl": "designs/blender_lid/blender_lid.stl",
+      "threeMF": null,
+      "bambu3MF": null,
+      "preview": "designs/blender_lid/preview.png",
+      "params": {
+        "jar_inner_diameter": "80",
+        "fit_clearance": "0.25",
+        "cap_thickness": "3",
+        "cap_overhang": "7",
+        "plug_depth": "10",
+        "plug_wall": "2.5",
+        "tab_length": "14",
+        "tab_width": "34"
+      },
+      "lastCommit": "Add blender lid design for 80 mm jar mouth",
+      "updated": "2026-07-13"
+    },
+    {
       "name": "cake_topper_soccer_kick",
       "stl": "designs/cake_topper_soccer_kick/cake_topper_soccer_kick.stl",
       "threeMF": "designs/cake_topper_soccer_kick/cake_topper_soccer_kick.3mf",
@@ -12,8 +31,8 @@
         "black_relief": "1.2",
         "scale_factor": "1.0"
       },
-      "lastCommit": "Add multi-color 3MF pipeline for cake topper",
-      "updated": "2026-07-11"
+      "lastCommit": "Merge pull request #17 from jesusroa1/agent/speed-up-design-builds",
+      "updated": "2026-07-12"
     },
     {
       "name": "mug",
@@ -28,8 +47,8 @@
         "base_thickness": "4",
         "handle_extend": "35"
       },
-      "lastCommit": "claude cowork info",
-      "updated": "2026-06-20"
+      "lastCommit": "Merge pull request #17 from jesusroa1/agent/speed-up-design-builds",
+      "updated": "2026-07-12"
     },
     {
       "name": "norwegian_rower_cake_topper",
@@ -42,7 +61,7 @@
         "color_relief": "0.6",
         "scale_factor": "0.128"
       },
-      "lastCommit": "Add norwegian_rower_cake_topper.scad for Norwegian rower topper",
+      "lastCommit": "Merge pull request #17 from jesusroa1/agent/speed-up-design-builds",
       "updated": "2026-07-12"
     },
     {
@@ -60,8 +79,8 @@
         "hook_h": "15",
         "corner_r": "5"
       },
-      "lastCommit": "add: Tesla Model 3 lotion holder (2017\u20132023)",
-      "updated": "2026-06-22"
+      "lastCommit": "Merge pull request #17 from jesusroa1/agent/speed-up-design-builds",
+      "updated": "2026-07-12"
     },
     {
       "name": "watch_stand",
@@ -79,9 +98,9 @@
         "head_body_height": "8",
         "head_dome_height": "12"
       },
-      "lastCommit": "Redesign watch stand as post/pillar style (drape-over head)",
-      "updated": "2026-06-21"
+      "lastCommit": "Merge pull request #17 from jesusroa1/agent/speed-up-design-builds",
+      "updated": "2026-07-12"
     }
   ],
-  "generated": "2026-07-13T01:41:16.694767+00:00"
+  "generated": "2026-07-13T04:00:47.156437+00:00"
 }
