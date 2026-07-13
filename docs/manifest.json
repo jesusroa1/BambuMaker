@@ -32,6 +32,20 @@
       "updated": "2026-06-20"
     },
     {
+      "name": "norwegian_rower_cake_topper",
+      "stl": "designs/norwegian_rower_cake_topper/norwegian_rower_cake_topper.stl",
+      "threeMF": "designs/norwegian_rower_cake_topper/norwegian_rower_cake_topper.3mf",
+      "bambu3MF": "designs/norwegian_rower_cake_topper/norwegian_rower_cake_topper_bambu.3mf",
+      "preview": "designs/norwegian_rower_cake_topper/preview.png",
+      "params": {
+        "base_thickness": "1.6",
+        "color_relief": "0.6",
+        "scale_factor": "0.128"
+      },
+      "lastCommit": "Add norwegian_rower_cake_topper.scad for Norwegian rower topper",
+      "updated": "2026-07-12"
+    },
+    {
       "name": "tesla_lotion_holder",
       "stl": "designs/tesla_lotion_holder/tesla_lotion_holder.stl",
       "threeMF": null,
@@ -69,5 +83,5 @@
       "updated": "2026-06-21"
     }
   ],
-  "generated": "2026-07-12T20:47:59.384243+00:00"
+  "generated": "2026-07-13T01:41:16.694767+00:00"
 }
