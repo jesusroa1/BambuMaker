@@ -7,7 +7,7 @@
       "bambu3MF": null,
       "preview": "designs/blender_lid/preview.png",
       "params": {
-        "jar_inner_diameter": "80",
+        "jar_inner_diameter": "92",
         "fit_clearance": "0.25",
         "cap_thickness": "3",
         "cap_overhang": "7",
@@ -16,8 +16,8 @@
         "tab_length": "14",
         "tab_width": "34"
       },
-      "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-07-13"
+      "lastCommit": "Widen fit tester steps to 1 and 2 mm per side",
+      "updated": "2026-07-14"
     },
     {
       "name": "cake_topper_soccer_kick",
@@ -41,18 +41,36 @@
       "bambu3MF": null,
       "preview": "designs/lid_fit_tester/preview.png",
       "params": {
-        "jar_inner_diameter": "80",
-        "clearance_start": "0.15",
-        "clearance_step": "0.1",
-        "disc_count": "4",
+        "jar_inner_diameter": "92",
+        "clearance_a": "2",
+        "clearance_b": "1",
+        "ring_wall": "8",
         "disc_thickness": "2",
+        "bar_width": "14",
         "label_size": "9",
-        "label_height": "0.6",
-        "grip_length": "50",
-        "grip_height": "8"
+        "label_height": "0.6"
       },
-      "lastCommit": "Add lid fit tester plate with four labeled clearance discs",
-      "updated": "2026-07-13"
+      "lastCommit": "Widen fit tester steps to 1 and 2 mm per side",
+      "updated": "2026-07-14"
+    },
+    {
+      "name": "lid_fit_tester_oversize",
+      "stl": "designs/lid_fit_tester_oversize/lid_fit_tester_oversize.stl",
+      "threeMF": null,
+      "bambu3MF": null,
+      "preview": "designs/lid_fit_tester_oversize/preview.png",
+      "params": {
+        "jar_inner_diameter": "92",
+        "clearance_a": "-1",
+        "clearance_b": "-2",
+        "ring_wall": "8",
+        "disc_thickness": "2",
+        "bar_width": "14",
+        "label_size": "9",
+        "label_height": "0.6"
+      },
+      "lastCommit": "Widen fit tester steps to 1 and 2 mm per side",
+      "updated": "2026-07-14"
     },
     {
       "name": "mug",
@@ -122,5 +140,5 @@
       "updated": "2026-07-13"
     }
   ],
-  "generated": "2026-07-13T21:31:53.759806+00:00"
+  "generated": "2026-07-14T02:55:52.298766+00:00"
 }
