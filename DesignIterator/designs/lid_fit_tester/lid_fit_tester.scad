@@ -1,8 +1,8 @@
 // BambuMaker: Lid Fit Tester — plate A (under-size: +2 / +1)
 // Calibration rings for the blender lid: flat rings sized to drop into a
 // 92 mm jar mouth at different clearances, to find the right friction fit
-// before reprinting the lid. Labels use shorthand: "+2" = 0.2 mm clearance
-// per side (ring is smaller than the mouth), "+1" = 0.1 mm.
+// before reprinting the lid. Labels are millimetres of clearance per side:
+// "+2" = 2 mm smaller than the mouth, "+1" = 1 mm smaller.
 // Plate B (lid_fit_tester_oversize) covers "-1" / "-2" (oversize rings).
 //
 // Rings instead of solid discs to save filament; the crossbar carries the
@@ -13,12 +13,11 @@
 // rings are packed diagonally; the plate spans ~160 mm in X/Y — over the
 // 150 mm flag threshold, inside the 170 mm comfort zone.
 //
-// High $fn so polygon faceting doesn't shrink the effective diameter
-// (at $fn=64 a 92 mm circle loses ~0.11 mm — same order as the fit steps).
+// High $fn so polygon faceting doesn't shrink the effective diameter.
 //
 // @param jar_inner_diameter 92
-// @param clearance_a 0.2
-// @param clearance_b 0.1
+// @param clearance_a 2
+// @param clearance_b 1
 // @param ring_wall 8
 // @param disc_thickness 2
 // @param bar_width 14
@@ -26,8 +25,8 @@
 // @param label_height 0.6
 
 jar_inner_diameter = 92;    // measured across the jar mouth opening (mm)
-clearance_a        = 0.2;   // first ring, labeled "+2"
-clearance_b        = 0.1;   // second ring, labeled "+1"
+clearance_a        = 2;     // first ring, labeled "+2" (2 mm per side)
+clearance_b        = 1;     // second ring, labeled "+1" (1 mm per side)
 ring_wall          = 8;     // radial wall of each test ring
 disc_thickness     = 2;     // keep testers thin to save filament
 bar_width          = 14;    // crossbar = label surface + pinch grip
@@ -38,8 +37,8 @@ $fn = 180;
 
 lead_in = 0.6;              // bottom-edge chamfer so rings enter the jar easily
 
-// "+2" / "-1" shorthand: clearance in tenths of a millimetre
-function clearance_label(c) = str(c > 0 ? "+" : "-", abs(round(c * 10)));
+// "+2" / "-1" shorthand: clearance in whole millimetres per side
+function clearance_label(c) = str(c > 0 ? "+" : "-", abs(round(c)));
 
 // chamfered solid blank the ring and bar are carved from
 module blank(od) {
@@ -74,6 +73,6 @@ module fit_ring(clearance) {
 }
 
 // ── diagonal 2-ring plate ────────────────────────────────
-offset = 34;
+offset = 35;
 translate([-offset, -offset]) fit_ring(clearance_a);
 translate([ offset,  offset]) fit_ring(clearance_b);
