@@ -1,5 +1,5 @@
 // BambuMaker: Blender Lid
-// Friction-fit lid for a blender jar with an 80 mm inner mouth diameter.
+// Friction-fit lid for a blender jar with a 92 mm inner mouth diameter.
 // A flat cap with two grip tabs sits on the rim; a hollow plug ring drops
 // inside the jar and holds by light friction (slip-fit clearance).
 //
@@ -8,7 +8,7 @@
 //
 // Recommended material: PETG (kitchen use, slight flex helps the fit).
 //
-// @param jar_inner_diameter 80
+// @param jar_inner_diameter 92
 // @param fit_clearance 0.25
 // @param cap_thickness 3
 // @param cap_overhang 7
@@ -17,8 +17,9 @@
 // @param tab_length 14
 // @param tab_width 34
 
-jar_inner_diameter = 80;    // measured across the jar mouth opening (mm)
-fit_clearance      = 0.25;  // per-side gap between plug and jar wall
+jar_inner_diameter = 92;    // measured across the jar mouth opening (mm)
+fit_clearance      = 0.25;  // per-side gap — provisional until the fit-tester
+                            // rings pick the winner (see lid_fit_tester)
 cap_thickness      = 3;     // flat top plate
 cap_overhang       = 7;     // how far the cap extends past the jar mouth
 plug_depth         = 10;    // how deep the ring reaches into the jar
@@ -26,7 +27,9 @@ plug_wall          = 2.5;   // plug ring wall thickness
 tab_length         = 14;    // grip tab reach past the cap edge
 tab_width          = 34;    // grip tab width along the cap edge
 
-$fn = 96;
+// High $fn so polygon faceting doesn't shrink the plug's effective
+// diameter (matches the lid_fit_tester rings).
+$fn = 180;
 
 plug_r  = jar_inner_diameter / 2 - fit_clearance;
 cap_r   = jar_inner_diameter / 2 + cap_overhang;

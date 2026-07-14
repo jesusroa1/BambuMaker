@@ -1,13 +1,11 @@
-// BambuMaker: Lid Fit Tester — plate A (under-size: +2 / +1)
-// Calibration rings for the blender lid: flat rings sized to drop into a
-// 92 mm jar mouth at different clearances, to find the right friction fit
-// before reprinting the lid. Labels are millimetres of clearance per side:
-// "+2" = 2 mm smaller than the mouth, "+1" = 1 mm smaller.
-// Plate B (lid_fit_tester_oversize) covers "-1" / "-2" (oversize rings).
+// BambuMaker: Lid Fit Tester — plate B (oversize: -1 / -2)
+// Companion to lid_fit_tester (plate A, "+2" / "+1"). Same flat test rings
+// for a 92 mm blender jar mouth, but oversize in case the mouth measures
+// over 92 mm: "-1" = 1 mm oversize per side, "-2" = 2 mm.
 //
 // Rings instead of solid discs to save filament; the crossbar carries the
 // label and doubles as the grip — pinch it through the ring openings to
-// pull the tester back out. No pull tab needed.
+// pull the tester back out.
 //
 // NOTE: two 92 mm circles side by side exceed the A1 Mini bed, so the two
 // rings are packed diagonally; the plate spans ~160 mm in X/Y — over the
@@ -16,8 +14,8 @@
 // High $fn so polygon faceting doesn't shrink the effective diameter.
 //
 // @param jar_inner_diameter 92
-// @param clearance_a 2
-// @param clearance_b 1
+// @param clearance_a -1
+// @param clearance_b -2
 // @param ring_wall 8
 // @param disc_thickness 2
 // @param bar_width 14
@@ -25,8 +23,8 @@
 // @param label_height 0.6
 
 jar_inner_diameter = 92;    // measured across the jar mouth opening (mm)
-clearance_a        = 2;     // first ring, labeled "+2" (2 mm per side)
-clearance_b        = 1;     // second ring, labeled "+1" (1 mm per side)
+clearance_a        = -1;    // first ring, labeled "-1" (1 mm oversize per side)
+clearance_b        = -2;    // second ring, labeled "-2" (2 mm oversize per side)
 ring_wall          = 8;     // radial wall of each test ring
 disc_thickness     = 2;     // keep testers thin to save filament
 bar_width          = 14;    // crossbar = label surface + pinch grip
