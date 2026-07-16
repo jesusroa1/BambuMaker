@@ -1,29 +1,28 @@
-// BambuMaker: Lid Fit Tester — plate 1 (93.5 / 93.0 mm)
-// Calibration rings for the blender lid. Round 2 found the jar mouth is
-// just barely under 94 mm (the 94 mm ring almost fit), so this round steps
-// down in 0.5 mm increments. Labels are the actual ring diameter in mm.
-// Plate 2 (lid_fit_tester_2) covers 92.5 / 92.0 mm.
+// BambuMaker: Lid Fit Tester — plate 2 (92.5 / 92.0 mm)
+// Companion to lid_fit_tester (plate 1: 93.5 / 93.0 mm). Round 2 found the
+// jar mouth is just barely under 94 mm, so this round steps down in 0.5 mm
+// increments. Labels are the actual ring diameter in mm.
 //
 // Rings instead of solid discs to save filament; the crossbar carries the
 // label and doubles as the grip — pinch it through the ring openings to
 // pull the tester back out.
 //
 // NOTE: two ~93 mm circles side by side exceed the A1 Mini bed, so the two
-// rings are packed diagonally; the plate spans ~164 mm in X/Y — over the
+// rings are packed diagonally; the plate spans ~163 mm in X/Y — over the
 // 150 mm flag threshold, inside the 170 mm comfort zone.
 //
 // High $fn so polygon faceting doesn't shrink the effective diameter.
 //
-// @param diameter_a 93.5
-// @param diameter_b 93
+// @param diameter_a 92.5
+// @param diameter_b 92
 // @param ring_wall 8
 // @param disc_thickness 2
 // @param bar_width 12
 // @param label_size 6
 // @param label_height 0.6
 
-diameter_a     = 93.5;  // first ring diameter (mm)
-diameter_b     = 93;    // second ring diameter (mm)
+diameter_a     = 92.5;  // first ring diameter (mm)
+diameter_b     = 92;    // second ring diameter (mm)
 ring_wall      = 8;     // radial wall of each test ring
 disc_thickness = 2;     // keep testers thin to save filament
 bar_width      = 12;    // crossbar = label surface + pinch grip
