@@ -16,7 +16,7 @@
         "tab_length": "14",
         "tab_width": "34"
       },
-      "lastCommit": "Widen fit tester steps to 1 and 2 mm per side",
+      "lastCommit": "build: regenerate docs [skip ci]",
       "updated": "2026-07-14"
     },
     {
@@ -32,7 +32,7 @@
         "scale_factor": "1.0"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-07-13"
+      "updated": "2026-07-14"
     },
     {
       "name": "lid_fit_tester",
@@ -41,36 +41,34 @@
       "bambu3MF": null,
       "preview": "designs/lid_fit_tester/preview.png",
       "params": {
-        "jar_inner_diameter": "92",
-        "clearance_a": "2",
-        "clearance_b": "1",
+        "diameter_a": "93.5",
+        "diameter_b": "93",
         "ring_wall": "8",
         "disc_thickness": "2",
-        "bar_width": "14",
-        "label_size": "9",
+        "bar_width": "12",
+        "label_size": "6",
         "label_height": "0.6"
       },
-      "lastCommit": "Widen fit tester steps to 1 and 2 mm per side",
-      "updated": "2026-07-14"
+      "lastCommit": "Refine fit testers to 0.5 mm steps below 94 mm",
+      "updated": "2026-07-16"
     },
     {
-      "name": "lid_fit_tester_oversize",
-      "stl": "designs/lid_fit_tester_oversize/lid_fit_tester_oversize.stl",
+      "name": "lid_fit_tester_2",
+      "stl": "designs/lid_fit_tester_2/lid_fit_tester_2.stl",
       "threeMF": null,
       "bambu3MF": null,
-      "preview": "designs/lid_fit_tester_oversize/preview.png",
+      "preview": "designs/lid_fit_tester_2/preview.png",
       "params": {
-        "jar_inner_diameter": "92",
-        "clearance_a": "-1",
-        "clearance_b": "-2",
+        "diameter_a": "92.5",
+        "diameter_b": "92",
         "ring_wall": "8",
         "disc_thickness": "2",
-        "bar_width": "14",
-        "label_size": "9",
+        "bar_width": "12",
+        "label_size": "6",
         "label_height": "0.6"
       },
-      "lastCommit": "Widen fit tester steps to 1 and 2 mm per side",
-      "updated": "2026-07-14"
+      "lastCommit": "Refine fit testers to 0.5 mm steps below 94 mm",
+      "updated": "2026-07-16"
     },
     {
       "name": "mug",
@@ -86,7 +84,7 @@
         "handle_extend": "35"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-07-13"
+      "updated": "2026-07-14"
     },
     {
       "name": "norwegian_rower_cake_topper",
@@ -100,7 +98,7 @@
         "scale_factor": "0.128"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-07-13"
+      "updated": "2026-07-14"
     },
     {
       "name": "tesla_lotion_holder",
@@ -118,7 +116,7 @@
         "corner_r": "5"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-07-13"
+      "updated": "2026-07-14"
     },
     {
       "name": "watch_stand",
@@ -137,8 +135,8 @@
         "head_dome_height": "12"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-07-13"
+      "updated": "2026-07-14"
     }
   ],
-  "generated": "2026-07-14T02:55:52.298766+00:00"
+  "generated": "2026-07-16T11:29:03.330859+00:00"
 }
