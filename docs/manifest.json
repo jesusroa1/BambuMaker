@@ -7,17 +7,17 @@
       "bambu3MF": null,
       "preview": "designs/blender_lid/preview.png",
       "params": {
-        "jar_inner_diameter": "92",
-        "fit_clearance": "0.25",
+        "seat_diameter": "92.4",
+        "tip_diameter": "91",
         "cap_thickness": "3",
         "cap_overhang": "7",
-        "plug_depth": "10",
+        "plug_depth": "12",
         "plug_wall": "2.5",
         "tab_length": "14",
         "tab_width": "34"
       },
-      "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-07-14"
+      "lastCommit": "feat: taper blender lid plug to wedge snug at 92 mm",
+      "updated": "2026-07-17"
     },
     {
       "name": "cake_topper_soccer_kick",
@@ -32,7 +32,7 @@
         "scale_factor": "1.0"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-07-14"
+      "updated": "2026-07-16"
     },
     {
       "name": "lid_fit_tester",
@@ -49,7 +49,7 @@
         "label_size": "6",
         "label_height": "0.6"
       },
-      "lastCommit": "Refine fit testers to 0.5 mm steps below 94 mm",
+      "lastCommit": "build: regenerate docs [skip ci]",
       "updated": "2026-07-16"
     },
     {
@@ -67,7 +67,7 @@
         "label_size": "6",
         "label_height": "0.6"
       },
-      "lastCommit": "Refine fit testers to 0.5 mm steps below 94 mm",
+      "lastCommit": "build: regenerate docs [skip ci]",
       "updated": "2026-07-16"
     },
     {
@@ -84,7 +84,7 @@
         "handle_extend": "35"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-07-14"
+      "updated": "2026-07-16"
     },
     {
       "name": "norwegian_rower_cake_topper",
@@ -98,7 +98,7 @@
         "scale_factor": "0.128"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-07-14"
+      "updated": "2026-07-16"
     },
     {
       "name": "tesla_lotion_holder",
@@ -116,7 +116,7 @@
         "corner_r": "5"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-07-14"
+      "updated": "2026-07-16"
     },
     {
       "name": "watch_stand",
@@ -135,8 +135,8 @@
         "head_dome_height": "12"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-07-14"
+      "updated": "2026-07-16"
     }
   ],
-  "generated": "2026-07-16T11:29:03.330859+00:00"
+  "generated": "2026-07-17T03:25:10.227942+00:00"
 }
