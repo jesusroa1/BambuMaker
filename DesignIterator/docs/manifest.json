@@ -16,7 +16,7 @@
         "tab_length": "14",
         "tab_width": "34"
       },
-      "lastCommit": "feat: taper blender lid plug to wedge snug at 92 mm",
+      "lastCommit": "build: regenerate docs [skip ci]",
       "updated": "2026-07-17"
     },
     {
@@ -32,7 +32,30 @@
         "scale_factor": "1.0"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-07-16"
+      "updated": "2026-07-17"
+    },
+    {
+      "name": "charger_dock_sleeve",
+      "stl": "designs/charger_dock_sleeve/charger_dock_sleeve.stl",
+      "threeMF": null,
+      "bambu3MF": null,
+      "preview": "designs/charger_dock_sleeve/preview.png",
+      "params": {
+        "pack_width": "63.5",
+        "pack_thickness": "12.7",
+        "fit_clearance": "0.4",
+        "sleeve_height": "30",
+        "wall": "1.6",
+        "base_thickness": "1.6",
+        "port_slot_width": "16",
+        "port_slot_depth": "9",
+        "port_offset": "0",
+        "notch_width": "26",
+        "notch_depth": "12",
+        "corner_radius": "3"
+      },
+      "lastCommit": "feat: add charger dock sleeve fit tester",
+      "updated": "2026-08-09"
     },
     {
       "name": "lid_fit_tester",
@@ -50,7 +73,7 @@
         "label_height": "0.6"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-07-16"
+      "updated": "2026-07-17"
     },
     {
       "name": "lid_fit_tester_2",
@@ -68,7 +91,7 @@
         "label_height": "0.6"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-07-16"
+      "updated": "2026-07-17"
     },
     {
       "name": "mug",
@@ -84,7 +107,7 @@
         "handle_extend": "35"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-07-16"
+      "updated": "2026-07-17"
     },
     {
       "name": "norwegian_rower_cake_topper",
@@ -98,7 +121,7 @@
         "scale_factor": "0.128"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-07-16"
+      "updated": "2026-07-17"
     },
     {
       "name": "tesla_lotion_holder",
@@ -116,7 +139,7 @@
         "corner_r": "5"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-07-16"
+      "updated": "2026-07-17"
     },
     {
       "name": "watch_stand",
@@ -135,8 +158,8 @@
         "head_dome_height": "12"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-07-16"
+      "updated": "2026-07-17"
     }
   ],
-  "generated": "2026-07-17T03:25:10.227942+00:00"
+  "generated": "2026-08-09T04:07:43.573718+00:00"
 }
