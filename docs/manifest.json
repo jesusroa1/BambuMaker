@@ -17,7 +17,7 @@
         "tab_width": "34"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-07-17"
+      "updated": "2026-08-09"
     },
     {
       "name": "cake_topper_soccer_kick",
@@ -32,7 +32,7 @@
         "scale_factor": "1.0"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-07-17"
+      "updated": "2026-08-09"
     },
     {
       "name": "charger_dock_sleeve",
@@ -54,8 +54,23 @@
         "notch_depth": "12",
         "corner_radius": "3"
       },
-      "lastCommit": "feat: add charger dock sleeve fit tester",
+      "lastCommit": "build: regenerate docs [skip ci]",
       "updated": "2026-08-09"
+    },
+    {
+      "name": "chelsea_jesus_cake_topper",
+      "stl": "designs/chelsea_jesus_cake_topper/chelsea_jesus_cake_topper.stl",
+      "threeMF": null,
+      "bambu3MF": null,
+      "preview": "designs/chelsea_jesus_cake_topper/preview.png",
+      "params": {
+        "topper_width": "150",
+        "thickness": "3",
+        "stake_length": "55",
+        "stake_width": "5"
+      },
+      "lastCommit": "feat: add Chelsea & Jesus wedding cake topper",
+      "updated": "2026-10-15"
     },
     {
       "name": "lid_fit_tester",
@@ -73,7 +88,7 @@
         "label_height": "0.6"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-07-17"
+      "updated": "2026-08-09"
     },
     {
       "name": "lid_fit_tester_2",
@@ -91,7 +106,7 @@
         "label_height": "0.6"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-07-17"
+      "updated": "2026-08-09"
     },
     {
       "name": "mug",
@@ -107,7 +122,7 @@
         "handle_extend": "35"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-07-17"
+      "updated": "2026-08-09"
     },
     {
       "name": "norwegian_rower_cake_topper",
@@ -121,7 +136,7 @@
         "scale_factor": "0.128"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-07-17"
+      "updated": "2026-08-09"
     },
     {
       "name": "tesla_lotion_holder",
@@ -139,7 +154,7 @@
         "corner_r": "5"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-07-17"
+      "updated": "2026-08-09"
     },
     {
       "name": "watch_stand",
@@ -158,8 +173,8 @@
         "head_dome_height": "12"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-07-17"
+      "updated": "2026-08-09"
     }
   ],
-  "generated": "2026-08-09T04:07:43.573718+00:00"
+  "generated": "2026-10-15T01:31:19.976779+00:00"
 }
