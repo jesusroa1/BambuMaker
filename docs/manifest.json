@@ -17,7 +17,7 @@
         "tab_width": "34"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-10-15"
+      "updated": "2026-10-16"
     },
     {
       "name": "cake_topper_soccer_kick",
@@ -32,7 +32,7 @@
         "scale_factor": "1.0"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-10-15"
+      "updated": "2026-10-16"
     },
     {
       "name": "charger_dock_sleeve",
@@ -55,7 +55,7 @@
         "corner_radius": "3"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-10-15"
+      "updated": "2026-10-16"
     },
     {
       "name": "chelsea_jesus_cake_topper",
@@ -70,7 +70,7 @@
         "stake_width": "5"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-10-15"
+      "updated": "2026-10-16"
     },
     {
       "name": "lid_fit_tester",
@@ -88,7 +88,7 @@
         "label_height": "0.6"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-10-15"
+      "updated": "2026-10-16"
     },
     {
       "name": "lid_fit_tester_2",
@@ -106,7 +106,7 @@
         "label_height": "0.6"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-10-15"
+      "updated": "2026-10-16"
     },
     {
       "name": "mug",
@@ -122,7 +122,7 @@
         "handle_extend": "35"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-10-15"
+      "updated": "2026-10-16"
     },
     {
       "name": "norwegian_rower_cake_topper",
@@ -136,7 +136,7 @@
         "scale_factor": "0.128"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-10-15"
+      "updated": "2026-10-16"
     },
     {
       "name": "tesla_lotion_holder",
@@ -154,7 +154,7 @@
         "corner_r": "5"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-10-15"
+      "updated": "2026-10-16"
     },
     {
       "name": "the_roas_cake_topper",
@@ -168,7 +168,22 @@
         "stake_length": "55",
         "stake_width": "5"
       },
-      "lastCommit": "feat: add The Roas wedding cake topper",
+      "lastCommit": "build: regenerate docs [skip ci]",
+      "updated": "2026-10-16"
+    },
+    {
+      "name": "the_roas_cake_topper_v2",
+      "stl": "designs/the_roas_cake_topper_v2/the_roas_cake_topper_v2.stl",
+      "threeMF": null,
+      "bambu3MF": null,
+      "preview": "designs/the_roas_cake_topper_v2/preview.png",
+      "params": {
+        "topper_width": "140",
+        "thickness": "3",
+        "stake_length": "45",
+        "stake_width": "5"
+      },
+      "lastCommit": "feat: add The Roas wedding cake topper (v2)",
       "updated": "2026-10-16"
     },
     {
@@ -188,8 +203,8 @@
         "head_dome_height": "12"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-10-15"
+      "updated": "2026-10-16"
     }
   ],
-  "generated": "2026-10-16T01:37:53.059980+00:00"
+  "generated": "2026-10-16T11:56:51.606888+00:00"
 }
