@@ -17,7 +17,7 @@
         "tab_width": "34"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-08-09"
+      "updated": "2026-10-15"
     },
     {
       "name": "cake_topper_soccer_kick",
@@ -32,7 +32,7 @@
         "scale_factor": "1.0"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-08-09"
+      "updated": "2026-10-15"
     },
     {
       "name": "charger_dock_sleeve",
@@ -55,7 +55,7 @@
         "corner_radius": "3"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-08-09"
+      "updated": "2026-10-15"
     },
     {
       "name": "chelsea_jesus_cake_topper",
@@ -69,7 +69,7 @@
         "stake_length": "55",
         "stake_width": "5"
       },
-      "lastCommit": "feat: add Chelsea & Jesus wedding cake topper",
+      "lastCommit": "build: regenerate docs [skip ci]",
       "updated": "2026-10-15"
     },
     {
@@ -88,7 +88,7 @@
         "label_height": "0.6"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-08-09"
+      "updated": "2026-10-15"
     },
     {
       "name": "lid_fit_tester_2",
@@ -106,7 +106,7 @@
         "label_height": "0.6"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-08-09"
+      "updated": "2026-10-15"
     },
     {
       "name": "mug",
@@ -122,7 +122,7 @@
         "handle_extend": "35"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-08-09"
+      "updated": "2026-10-15"
     },
     {
       "name": "norwegian_rower_cake_topper",
@@ -136,7 +136,7 @@
         "scale_factor": "0.128"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-08-09"
+      "updated": "2026-10-15"
     },
     {
       "name": "tesla_lotion_holder",
@@ -154,7 +154,22 @@
         "corner_r": "5"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-08-09"
+      "updated": "2026-10-15"
+    },
+    {
+      "name": "the_roas_cake_topper",
+      "stl": "designs/the_roas_cake_topper/the_roas_cake_topper.stl",
+      "threeMF": null,
+      "bambu3MF": null,
+      "preview": "designs/the_roas_cake_topper/preview.png",
+      "params": {
+        "topper_width": "150",
+        "thickness": "3",
+        "stake_length": "55",
+        "stake_width": "5"
+      },
+      "lastCommit": "feat: add The Roas wedding cake topper",
+      "updated": "2026-10-16"
     },
     {
       "name": "watch_stand",
@@ -173,8 +188,8 @@
         "head_dome_height": "12"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-08-09"
+      "updated": "2026-10-15"
     }
   ],
-  "generated": "2026-10-15T01:31:19.976779+00:00"
+  "generated": "2026-10-16T01:37:53.059980+00:00"
 }
