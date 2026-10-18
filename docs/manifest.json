@@ -73,6 +73,34 @@
       "updated": "2026-10-16"
     },
     {
+      "name": "chelsea_jesus_mirror_sign_bottom",
+      "stl": "designs/chelsea_jesus_mirror_sign_bottom/chelsea_jesus_mirror_sign_bottom.stl",
+      "threeMF": null,
+      "bambu3MF": null,
+      "preview": "designs/chelsea_jesus_mirror_sign_bottom/preview.png",
+      "params": {
+        "name_height": "76.2",
+        "thickness": "0.6",
+        "piece_gap": "5"
+      },
+      "lastCommit": "feat: add Chelsea & Jesus mirror sign lettering",
+      "updated": "2026-10-18"
+    },
+    {
+      "name": "chelsea_jesus_mirror_sign_top",
+      "stl": "designs/chelsea_jesus_mirror_sign_top/chelsea_jesus_mirror_sign_top.stl",
+      "threeMF": null,
+      "bambu3MF": null,
+      "preview": "designs/chelsea_jesus_mirror_sign_top/preview.png",
+      "params": {
+        "name_height": "76.2",
+        "thickness": "0.6",
+        "piece_gap": "5"
+      },
+      "lastCommit": "feat: add Chelsea & Jesus mirror sign lettering",
+      "updated": "2026-10-18"
+    },
+    {
       "name": "lid_fit_tester",
       "stl": "designs/lid_fit_tester/lid_fit_tester.stl",
       "threeMF": null,
@@ -183,7 +211,7 @@
         "stake_length": "45",
         "stake_width": "5"
       },
-      "lastCommit": "feat: add The Roas wedding cake topper (v2)",
+      "lastCommit": "build: regenerate docs [skip ci]",
       "updated": "2026-10-16"
     },
     {
@@ -206,5 +234,5 @@
       "updated": "2026-10-16"
     }
   ],
-  "generated": "2026-10-16T11:56:51.606888+00:00"
+  "generated": "2026-10-18T02:29:25.887255+00:00"
 }
