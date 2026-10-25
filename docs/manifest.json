@@ -17,7 +17,7 @@
         "tab_width": "34"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-10-16"
+      "updated": "2026-10-18"
     },
     {
       "name": "cake_topper_soccer_kick",
@@ -32,7 +32,7 @@
         "scale_factor": "1.0"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-10-16"
+      "updated": "2026-10-18"
     },
     {
       "name": "charger_dock_sleeve",
@@ -55,7 +55,7 @@
         "corner_radius": "3"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-10-16"
+      "updated": "2026-10-18"
     },
     {
       "name": "chelsea_jesus_cake_topper",
@@ -70,7 +70,7 @@
         "stake_width": "5"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-10-16"
+      "updated": "2026-10-18"
     },
     {
       "name": "chelsea_jesus_mirror_sign_bottom",
@@ -83,7 +83,7 @@
         "thickness": "0.6",
         "piece_gap": "5"
       },
-      "lastCommit": "feat: add Chelsea & Jesus mirror sign lettering",
+      "lastCommit": "build: regenerate docs [skip ci]",
       "updated": "2026-10-18"
     },
     {
@@ -97,7 +97,7 @@
         "thickness": "0.6",
         "piece_gap": "5"
       },
-      "lastCommit": "feat: add Chelsea & Jesus mirror sign lettering",
+      "lastCommit": "build: regenerate docs [skip ci]",
       "updated": "2026-10-18"
     },
     {
@@ -116,7 +116,7 @@
         "label_height": "0.6"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-10-16"
+      "updated": "2026-10-18"
     },
     {
       "name": "lid_fit_tester_2",
@@ -134,7 +134,7 @@
         "label_height": "0.6"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-10-16"
+      "updated": "2026-10-18"
     },
     {
       "name": "mug",
@@ -150,7 +150,7 @@
         "handle_extend": "35"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-10-16"
+      "updated": "2026-10-18"
     },
     {
       "name": "norwegian_rower_cake_topper",
@@ -164,7 +164,7 @@
         "scale_factor": "0.128"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-10-16"
+      "updated": "2026-10-18"
     },
     {
       "name": "tesla_lotion_holder",
@@ -182,7 +182,7 @@
         "corner_r": "5"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-10-16"
+      "updated": "2026-10-18"
     },
     {
       "name": "the_roas_cake_topper",
@@ -197,7 +197,7 @@
         "stake_width": "5"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-10-16"
+      "updated": "2026-10-18"
     },
     {
       "name": "the_roas_cake_topper_v2",
@@ -208,11 +208,12 @@
       "params": {
         "topper_width": "140",
         "thickness": "3",
-        "stake_length": "45",
-        "stake_width": "5"
+        "stake_length": "100",
+        "stake_width": "7",
+        "print_angle": "42"
       },
-      "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-10-16"
+      "lastCommit": "feat: max out The Roas v2 stake at 100 mm",
+      "updated": "2026-10-24"
     },
     {
       "name": "watch_stand",
@@ -231,8 +232,8 @@
         "head_dome_height": "12"
       },
       "lastCommit": "build: regenerate docs [skip ci]",
-      "updated": "2026-10-16"
+      "updated": "2026-10-18"
     }
   ],
-  "generated": "2026-10-18T02:29:25.887255+00:00"
+  "generated": "2026-10-25T01:17:36.688729+00:00"
 }
