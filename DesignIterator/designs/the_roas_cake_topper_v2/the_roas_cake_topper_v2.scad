@@ -7,11 +7,15 @@
 // and the stake form one connected piece, so there are no loose islands.
 // No supports required.
 //
-// SIZE FLAG: ~140 mm wide x ~168 mm tall at the default settings (lettering
-// ~123 mm tall + 45 mm stake). Fits inside the A1 Mini's 170 mm safety
-// margin, but it fills most of the bed. This artwork is taller than the v1
-// topper, so keep topper_width + stake_length in check: total height is
-// ~0.876 * topper_width + stake_length.
+// SIZE FLAG: ~140 mm wide x ~223 mm tall at the default settings (lettering
+// ~123 mm tall + 100 mm stake). That is too tall to lie straight on the
+// A1 Mini's 180 mm bed, so the model is rotated by print_angle (42 degrees)
+// to sit diagonally: the exported STL is ~170 x 170 mm and prints as-is.
+// 100 mm is the longest stake that keeps that inside the 170 mm safety
+// margin. Set print_angle = 0 for an upright view.
+//
+// The stake is widened to 7 mm so the long stake stays stiff. Check the
+// cake tier is taller than ~100 mm, or shorten stake_length to suit.
 //
 // Suggested: PLA (black, gold or silk), 0.2 mm layers, 3 walls, 100% infill
 // (it's thin, so this is effectively solid). Wrap the stake in food-safe
@@ -19,13 +23,15 @@
 //
 // @param topper_width 140
 // @param thickness 3
-// @param stake_length 45
-// @param stake_width 5
+// @param stake_length 100
+// @param stake_width 7
+// @param print_angle 42
 
 topper_width = 140;   // overall width of the lettering, mm
 thickness    = 3;     // plate thickness, mm
-stake_length = 45;    // how far the stake extends below the lettering, mm
-stake_width  = 5;     // stake width where it goes into the cake, mm
+stake_length = 100;   // how far the stake extends below the lettering, mm
+stake_width  = 7;     // stake width where it goes into the cake, mm
+print_angle  = 42;    // rotation on the bed so the long piece fits diagonally, degrees
 
 // --- Traced artwork geometry (SVG units; 1 unit = 1 mm before scaling) ---
 art_x_min  = 191;     // left edge of the lettering
@@ -60,8 +66,9 @@ module stake() {
         ]);
 }
 
-linear_extrude(height = thickness)
-    union() {
-        lettering();
-        stake();
-    }
+rotate([0, 0, print_angle])
+    linear_extrude(height = thickness)
+        union() {
+            lettering();
+            stake();
+        }
